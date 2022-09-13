@@ -2,6 +2,8 @@ package Runner;
 
 import java.util.Arrays;
 
+import Actions.Action;
+import Actions.AttackAction;
 import Combatants.Combatant;
 import Combatants.CombatantSorter;
 import Combatants.Statistics;
@@ -63,6 +65,14 @@ public class GameInitialiser {
 			
 			Combatant A = new Combatant("Skeleton", 13, 13, 30, aStats);
 			Combatant B = new Combatant("Flying Sword", 17, 17, 50, bStats);
+			
+			//	super(type, diceSides, diceCount, targetCount, repeats, toHitBonus, damageBonus);
+			
+			AttackAction skeletonAttack = new AttackAction("attack", 6, 1, 1, 1, 4, 2);
+			AttackAction swordAttack = new AttackAction("attack", 8, 1, 1, 1, 3, 1);
+			
+			A.addAction(skeletonAttack);
+			B.addAction(swordAttack);
 			
 			A.setTeam("red");
 			B.setTeam("blue");

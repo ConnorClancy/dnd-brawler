@@ -1,5 +1,8 @@
 package Combatants;
 
+import java.util.ArrayList;
+
+import Actions.Action;
 import Exceptions.CreationException;
 
 public class Combatant {
@@ -15,6 +18,8 @@ public class Combatant {
 	
 	protected int initiative;
 	
+	protected ArrayList<Action> actions;
+
 	public Combatant(String name, int healthPoints, int ac, int speed, Statistics statistics)  throws CreationException {
 		if(statistics.isValid())
 		{
@@ -25,6 +30,7 @@ public class Combatant {
 			this.statistics = statistics;
 			
 			this.maximumHealthPoints = this.healthPoints;
+			this.actions = new ArrayList<Action>();
 		} else {
 			throw new CreationException("Stats given are invalid");
 		}
@@ -77,6 +83,14 @@ public class Combatant {
 
 	public String toString() {
 		return "Name: " + this.name;
+	}
+	
+	public ArrayList<Action> getActions() {
+		return actions;
+	}
+
+	public void addAction(Action action) {
+		this.actions.add(action);
 	}
 	
 }

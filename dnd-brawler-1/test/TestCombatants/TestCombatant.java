@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Actions.Action;
 import Combatants.Combatant;
 import Combatants.Statistics;
 import Exceptions.CreationException;
@@ -67,6 +68,30 @@ class TestCombatant {
 		});
 		
 		assertEquals("Stats given are invalid", exception.getMessage());
+		
+	}
+	
+	@Test
+	void testActions() {
+		
+		Statistics validStats = new Statistics(
+				0,
+				2,
+				2,
+				-2,
+				-1,
+				-3
+			);
+		
+		try {
+			combatant = new Combatant("Skeleton", 13, 13, 30, validStats);
+			
+			Action A = new Action("test", 1 ,1, 1, 1, 1, 1);
+			
+			
+		} catch (CreationException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

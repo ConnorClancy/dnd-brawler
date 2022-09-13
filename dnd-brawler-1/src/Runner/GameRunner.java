@@ -54,12 +54,20 @@ public class GameRunner {
 
 			}
 			
+			System.out.println("----------------------");
+
+			System.out.println("Winning Team: " + State.getState().getRoster().get(0).getTeam());
+
+			
 		}
 		
 		else {
 			//TODO throw some custom exception
 			System.out.println("Fuckin Error with setField m8");
 		}
+		
+		System.out.println("----------------------");
+		
 		
 		System.out.println("Brawl Brawled");
 	}

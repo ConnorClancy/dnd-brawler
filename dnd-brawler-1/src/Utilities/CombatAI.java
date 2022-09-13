@@ -12,14 +12,13 @@ public class CombatAI {
 	
 	
 	public static Event determineAction(Combatant currentCombatant, CombatRoster roster) {
-		Action chosenAction = new AttackAction("Attack", 6, 2, 1, 1, 4, 2);
+		
+		//TODO add choosing logic
+		Action chosenAction = currentCombatant.getActions().get(0);
 
 		Stack<Combatant> targets = new Stack<Combatant>();
 
-		/*
-		 * TODO choosing logic
-		 */
-
+		 //TODO choosing logic
 		targets.push(roster.getOpponents(currentCombatant).getFirst());
 
 		EventFactory factory = EventFactory.getEventFactory();
