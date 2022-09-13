@@ -36,6 +36,20 @@ class TestCombatant {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		Statistics validStats = new Statistics(
+				0,
+				2,
+				2,
+				-2,
+				-1,
+				-3
+			);
+		
+		try {
+			combatant = new Combatant("Skeleton", 13, 13, 30, validStats);
+		} catch (CreationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -72,26 +86,36 @@ class TestCombatant {
 	}
 	
 	@Test
-	void testActions() {
+	void testAddAction() {
 		
-		Statistics validStats = new Statistics(
-				0,
-				2,
-				2,
-				-2,
-				-1,
-				-3
-			);
+		Action A = new Action("test", 1 ,1, 1, 1, 1, 1);
 		
-		try {
-			combatant = new Combatant("Skeleton", 13, 13, 30, validStats);
-			
-			Action A = new Action("test", 1 ,1, 1, 1, 1, 1);
-			
-			
-		} catch (CreationException e) {
-			e.printStackTrace();
-		}
+		combatant.addAction(A);
+		
+		assertEquals(A.getDamageBonus(), combatant.getActions().get(0).getDamageBonus());
+		assertEquals(A.getDiceCount(), combatant.getActions().get(0).getDiceCount());
+		assertEquals(A.getRepeats(), combatant.getActions().get(0).getRepeats());
+	
+	}
+	
+	@Test
+	void testOverHeal() {
+		
+		int startingHealth = combatant.getHealthPoints();
+		
+		combatant.reduceHealthPoints(5);
+		
+		combatant.increaseHealthPoints(3, false);
+		
+		assertEquals(startingHealth - 2, combatant.getHealthPoints());
+		
+		combatant.increaseHealthPoints(2000, false);
+		
+		assertEquals(startingHealth, combatant.getHealthPoints());
+		
+		combatant.increaseHealthPoints(2000, true);
+		
+		assertEquals(startingHealth + 2000, combatant.getHealthPoints());
 		
 	}
 
