@@ -1,5 +1,6 @@
 package Events;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import Actions.Action;
@@ -12,5 +13,7 @@ public interface Event {
 	public Stack<Combatant> getTargetStack();
 	
 	public void doActionToTargets();
+
+	boolean combatantsRemoved();
 
 }

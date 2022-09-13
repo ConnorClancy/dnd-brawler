@@ -11,10 +11,12 @@ public class AttackEvent implements Event {
 	
 	protected Action action;
 	protected Stack<Combatant> targetStack;
+	protected boolean combatantsRemoved;
 
 	public AttackEvent(Action action, Stack<Combatant> targetStack) {
 		this.action = action;
 		this.targetStack = targetStack;
+		combatantsRemoved = false;
 	}
 
 	@Override
@@ -62,6 +64,8 @@ public class AttackEvent implements Event {
 				if (currentTarget.getHealthPoints() <= 0) {
 					State.getState().removeCombatant(currentTarget);
 					
+					combatantsRemoved = true;
+					
 					if (this.targetStack.isEmpty()) {
 						return;
 					} else {
@@ -94,6 +98,11 @@ public class AttackEvent implements Event {
 			// >:(
 			//better coding but less fun
 		}
+	}
+
+	@Override
+	public boolean combatantsRemoved() {
+		return combatantsRemoved;
 	}
 
 }
