@@ -2,7 +2,6 @@ package Runner;
 
 import java.util.Arrays;
 
-import Actions.Action;
 import Actions.AttackAction;
 import Combatants.Combatant;
 import Combatants.CombatantSorter;
@@ -65,6 +64,7 @@ public class GameInitialiser {
 			
 			Combatant A = new Combatant("Skeleton", 13, 13, 30, aStats);
 			Combatant B = new Combatant("Flying Sword", 17, 17, 50, bStats);
+			Combatant C = new Combatant("Skeleton2", 13, 13, 30, aStats);
 			
 			//	super(type, diceSides, diceCount, targetCount, repeats, toHitBonus, damageBonus);
 			
@@ -73,11 +73,13 @@ public class GameInitialiser {
 			
 			A.addAction(skeletonAttack);
 			B.addAction(swordAttack);
+			C.addAction(skeletonAttack);
 			
 			A.setTeam("red");
 			B.setTeam("blue");
+			C.setTeam("red");
 			
-			Combatant[] field = {A, B};
+			Combatant[] field = {A, B, C};
 			
 			State state = State.getState();
 			
