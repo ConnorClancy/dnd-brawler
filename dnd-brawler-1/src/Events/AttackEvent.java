@@ -57,10 +57,11 @@ public class AttackEvent implements Event {
 			// then switch target, else end turn
 
 			if (attackRoll >= currentTarget.getAc()) {
-				currentTarget.reduceHealthPoints(damageRoll);
 				
 				System.out.println("Hits " + currentTarget.toString() + " for " + damageRoll + " points of damage");
 
+				currentTarget.reduceHealthPoints(damageRoll);
+				
 				if (currentTarget.getHealthPoints() <= 0) {
 					State.getState().removeCombatant(currentTarget);
 					
