@@ -82,7 +82,7 @@ public class Combatant {
 	}
 
 	public String toString() {
-		return "Name: " + this.name;
+		return this.name + " (hp:" + this.healthPoints + ")";
 	}
 	
 	public ArrayList<Action> getActions() {
@@ -91,6 +91,11 @@ public class Combatant {
 
 	public void addAction(Action action) {
 		this.actions.add(action);
+	}
+
+	public void updateName(String newName) {
+		this.name = newName;
+		
 	}
 	
 }

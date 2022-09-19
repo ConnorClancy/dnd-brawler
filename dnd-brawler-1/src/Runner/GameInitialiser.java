@@ -1,6 +1,14 @@
 package Runner;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import Actions.AttackAction;
 import Combatants.Combatant;
@@ -8,6 +16,7 @@ import Combatants.CombatantSorter;
 import Combatants.Statistics;
 import Exceptions.CreationException;
 import Utilities.DiceBox;
+
 
 public class GameInitialiser {
 
@@ -31,7 +40,7 @@ public class GameInitialiser {
 	//CombatantRepitour class = actions logic etc?
 	
 	
-	public GameInitialiser(/*pass in combatants in future?*/) {
+	public GameInitialiser() {
 		
 	}
 	
@@ -41,67 +50,113 @@ public class GameInitialiser {
 	 * adds to state
 	 */
 	public boolean setField() {
-				
-		Statistics aStats = new Statistics(
-				0,
-				2,
-				2,
-				-2,
-				-1,
-				-3
-			);
 		
-		Statistics bStats = new Statistics(
-				1,
-				2,
-				0,
-				-5,
-				-3,
-				-5
-			);
+		Path dirName = Path.of("/Users/connorclancy/dev/dnd-brawler/dnd-brawler-1/sampleJsonCombatants");
+		
+		ArrayList<Combatant> field = new ArrayList<Combatant>();
 		
 		try {
 			
-			Combatant A = new Combatant("Skeleton", 13, 13, 30, aStats);
-			Combatant B = new Combatant("Flying Sword", 17, 17, 50, bStats);
-			Combatant C = new Combatant("Skeleton2", 13, 13, 30, aStats);
-			
-			//	super(type, diceSides, diceCount, targetCount, repeats, toHitBonus, damageBonus);
-			
-			AttackAction skeletonAttack = new AttackAction("attack", 6, 1, 1, 1, 4, 2);
-			AttackAction swordAttack = new AttackAction("attack", 8, 1, 1, 1, 3, 1);
-			
-			A.addAction(skeletonAttack);
-			B.addAction(swordAttack);
-			C.addAction(skeletonAttack);
-			
-			A.setTeam("red");
-			B.setTeam("blue");
-			C.setTeam("red");
-			
-			Combatant[] field = {A, B, C};
+			Files.walk(dirName).filter(Files::isRegularFile).forEach(path -> {
+	            System.out.println(path);
+	           
+	            try {
+	    			String str = Files.readString(path);
+
+	    			JSONObject combatantJson = new JSONObject(str);
+
+    				JSONObject stats = combatantJson.getJSONObject("statistics");
+    				
+    				
+	    			int m = combatantJson.getInt("amountOfCreatureInCombat");
+	    			
+					for (int i = 1; i <= m; i++) {
+    				
+	    				Combatant A = new Combatant(
+	    						combatantJson.getString("name"),
+	    						combatantJson.getInt("healthPoints"),
+	    						combatantJson.getInt("armourClass"),
+	    						combatantJson.getInt("speed"),
+	    						new Statistics(
+	    								stats.getInt("strength"),
+	    								stats.getInt("dexterity"),
+	    								stats.getInt("constitusion"),
+	    								stats.getInt("intelligence"),
+	    								stats.getInt("wisdom"),
+	    								stats.getInt("charisma")
+	    								)
+	    						);
+	    				
+	    				A.setTeam(combatantJson.getString("team"));
+	    				
+	    				JSONArray actions = combatantJson.getJSONArray("actions");
+	
+	    				for (int j = 0; j < actions.length(); j++) {
+	    					JSONObject jo = actions.getJSONObject(j);
+	
+	    					switch (jo.getString("type")) {
+	    					case "Melee Weapon Attack":
+	    						A.addAction(
+	    								new AttackAction(
+	    										"attack", 
+	    										jo.getInt("diceSides"),
+	    										jo.getInt("diceCount"),
+	    										jo.getInt("targetCount"),
+	    										jo.getInt("repeats"),
+	    										jo.getInt("toHitBonus"),
+	    										jo.getInt("damageBonus")
+	    										)
+	    								);
+	    						break;
+	    					case "Ranged Weapon Attack":
+	    						A.addAction(
+	    								new AttackAction(
+	    										"attack", 
+	    										jo.getInt("diceSides"),
+	    										jo.getInt("diceCount"),
+	    										jo.getInt("targetCount"),
+	    										jo.getInt("repeats"),
+	    										jo.getInt("toHitBonus"),
+	    										jo.getInt("damageBonus")
+	    										)
+	    								);
+	    						break;
+	    					default:
+	    						throw new CreationException("Action not recognised");
+	    					}
+	    					
+	    				}
+
+						System.out.println(A.toString());
+						A.updateName(combatantJson.getString("name") + "-" + i);
+						field.add(A);
+					}
+		            
+				} catch (IOException | JSONException | CreationException e) {
+					System.out.println(e.getMessage());
+				}
+	        });
 			
 			State state = State.getState();
-			
+
 			int initiative = 0;
-			
+
 			for (Combatant c : field) {
 				initiative = rollInitiative(c);
 				System.out.println(c.toString() + " - intiative:" + initiative);
 				c.setInitiative(initiative);
 			}
-			
-			Arrays.sort(field, new CombatantSorter());
-			
+
+			field.sort(new CombatantSorter());
+
 			for (Combatant c : field) {
 				state.addCombatant(c);
 			}
-			
-			
-		} catch (CreationException C) {
-			System.out.println(C.getMessage());
+
+		} catch (IOException exeption) {
+			System.out.println(exeption.getMessage());
 		}
-		
+
 		if (State.getState().getRoster().isEmpty()) {
 			return false;
 		} else {

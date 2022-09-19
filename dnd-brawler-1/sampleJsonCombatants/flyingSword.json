@@ -1,0 +1,29 @@
+{
+	"name" : "Flying Sword",
+	"healthPoints" : "17",
+	"armourClass" : "17",
+	"speed" : "50",
+	"team" : "blue",
+	"statistics" : {
+		"strength" : "1",
+		"dexterity" : "2",
+		"constitusion" : "0",
+		"intelligence" : "-5",
+		"wisdom" : "-3",
+		"charisma" : "-5"
+	},
+	"actions" : [
+		{
+			"type" : "Melee Weapon Attack",
+			"diceSides" : "8",
+			"diceCount" : "1",
+			"targetCount" : "1",
+			"repeats" : "1",
+			"toHitBonus" : "3",
+			"damageBonus" : "1",
+			"rangeLower" : "5",
+			"rangeUpper" : "5"
+		}	
+	],
+	"amountOfCreatureInCombat" : "2"
+}
