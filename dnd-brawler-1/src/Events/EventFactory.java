@@ -26,7 +26,7 @@ public class EventFactory {
 	
 	public Event createEvent(Action action, Stack<Combatant> targetStack) throws EventTypeException {		
 		if (action instanceof AttackAction ) {
-			return new AttackEvent(action, targetStack);
+			return new AttackEvent((AttackAction)action, targetStack);
 		} else {
 			throw new EventTypeException("Action type not recognised");
 		}

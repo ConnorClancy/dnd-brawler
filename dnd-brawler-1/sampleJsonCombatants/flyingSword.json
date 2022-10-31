@@ -12,18 +12,21 @@
 		"wisdom" : "-3",
 		"charisma" : "-5"
 	},
-	"actions" : [
-		{
-			"type" : "Melee Weapon Attack",
-			"diceSides" : "8",
-			"diceCount" : "1",
-			"targetCount" : "1",
-			"repeats" : "1",
-			"toHitBonus" : "3",
-			"damageBonus" : "1",
-			"rangeLower" : "5",
-			"rangeUpper" : "5"
-		}	
-	],
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "attack",
+				"name" : "Longsword",
+				"diceSides" : "8",
+				"diceCount" : "1",
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "3",
+				"damageBonus" : "1",
+				"rangeLower" : "5",
+				"rangeUpper" : "5"
+			}	
+		]
+	},
 	"amountOfCreatureInCombat" : "2"
 }

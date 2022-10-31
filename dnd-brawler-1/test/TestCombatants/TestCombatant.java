@@ -88,7 +88,7 @@ class TestCombatant {
 	@Test
 	void testAddAction() {
 		
-		Action A = new Action("test", 1 ,1, 1, 1, 1, 1);
+		Action A = new Action("test", 1 ,1, 1, 1, 1);
 		
 		combatant.addAction(A);
 		

@@ -7,7 +7,6 @@ public class Action {
 	protected int diceCount;
 	protected int targetCount;
 	protected int repeats;
-	protected int toHitBonus;
 	protected int damageBonus;
 	
 	
@@ -18,7 +17,6 @@ public class Action {
 			int diceCount, 
 			int targetCount, 
 			int repeats, 
-			int toHitBonus,
 			int damageBonus
 	) {
 		this.type = type;
@@ -26,7 +24,6 @@ public class Action {
 		this.diceCount = diceCount;
 		this.targetCount = targetCount;
 		this.repeats = repeats;
-		this.toHitBonus = toHitBonus;
 		this.damageBonus = damageBonus;
 	}
 
@@ -52,11 +49,6 @@ public class Action {
 
 	public int getRepeats() {
 		return repeats;
-	}
-
-
-	public int getToHitBonus() {
-		return toHitBonus;
 	}
 
 

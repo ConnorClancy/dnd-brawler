@@ -3,17 +3,18 @@ package Events;
 import java.util.Stack;
 
 import Actions.Action;
+import Actions.AttackAction;
 import Combatants.Combatant;
 import Runner.State;
 import Utilities.DiceBox;
 
 public class AttackEvent implements Event {
 	
-	protected Action action;
+	protected AttackAction action;
 	protected Stack<Combatant> targetStack;
 	protected boolean combatantsRemoved;
 
-	public AttackEvent(Action action, Stack<Combatant> targetStack) {
+	public AttackEvent(AttackAction action, Stack<Combatant> targetStack) {
 		this.action = action;
 		this.targetStack = targetStack;
 		combatantsRemoved = false;

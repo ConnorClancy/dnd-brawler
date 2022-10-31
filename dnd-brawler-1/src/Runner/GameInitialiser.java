@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import Actions.AttackAction;
+import Actions.RegenerationAction;
 import Combatants.Combatant;
 import Combatants.CombatantSorter;
 import Combatants.Statistics;
@@ -89,7 +89,12 @@ public class GameInitialiser {
 	    				
 	    				A.setTeam(combatantJson.getString("team"));
 	    				
-	    				JSONArray actions = combatantJson.getJSONArray("actions");
+	    				//get all abilities and parse into respective sets
+	    				JSONObject abilities = combatantJson.getJSONObject("abilities");
+	    					    	
+	    				//get turn actions first
+	    				JSONArray actions = abilities.getJSONArray("actions");
+	    				
 	
 	    				for (int j = 0; j < actions.length(); j++) {
 	    					JSONObject jo = actions.getJSONObject(j);
@@ -121,6 +126,10 @@ public class GameInitialiser {
 	    										)
 	    								);
 	    						break;
+							case "Regeneration":
+								A.addAction(
+										new RegenerationAction("Regeneration", 0, 0, 0, 0, 0, jo.getInt("flatAmount")));
+
 	    					default:
 	    						throw new CreationException("Action not recognised");
 	    					}
