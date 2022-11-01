@@ -2,7 +2,6 @@ package Events;
 
 import java.util.Stack;
 
-import Actions.Action;
 import Actions.AttackAction;
 import Combatants.Combatant;
 import Runner.State;
@@ -18,16 +17,6 @@ public class AttackEvent implements Event {
 		this.action = action;
 		this.targetStack = targetStack;
 		combatantsRemoved = false;
-	}
-
-	@Override
-	public Action getAction() {
-		return action;
-	}
-
-	@Override
-	public Stack<Combatant> getTargetStack() {
-		return targetStack;
 	}
 
 	@Override

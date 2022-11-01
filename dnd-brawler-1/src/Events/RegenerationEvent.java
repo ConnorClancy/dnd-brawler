@@ -2,13 +2,12 @@ package Events;
 
 import java.util.Stack;
 
-import Actions.Action;
 import Actions.RegenerationAction;
 import Combatants.Combatant;
 
 public class RegenerationEvent implements Event {
 
-	boolean NOT_OVERHEAL = false;
+	protected final boolean NOT_OVERHEAL = false;
 
 	protected RegenerationAction action;
 	protected Stack<Combatant> targetStack;
@@ -16,18 +15,6 @@ public class RegenerationEvent implements Event {
 	public RegenerationEvent(RegenerationAction action, Stack<Combatant> targetStack) {
 		this.action = action;
 		this.targetStack = targetStack;
-	}
-
-	@Override
-	public Action getAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Stack<Combatant> getTargetStack() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -42,7 +29,6 @@ public class RegenerationEvent implements Event {
 
 	@Override
 	public boolean combatantsRemoved() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
