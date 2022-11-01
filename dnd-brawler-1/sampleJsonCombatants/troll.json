@@ -15,14 +15,6 @@
 	"abilities" : {
 		"actions" : [
 			{
-				"type" : "multiattack",
-				"name" : "multiattack",
-				"sequence" : {
-					"Bite" : "1",
-					"Claw" : "2"
-				}
-			},
-			{
 				"type": "attack",
 				"name" : "Bite",
 				"toHitBonus": "7",
@@ -47,7 +39,7 @@
 				"damageBonus": "4"
 			}
 		],
-		"Passives": [
+		"passives": [
 			{
 				"type" : "Regeneration",
 				"name" : "Regeneration",

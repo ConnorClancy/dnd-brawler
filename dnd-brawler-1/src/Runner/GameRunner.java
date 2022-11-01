@@ -44,6 +44,9 @@ public class GameRunner {
 					roster = State.getState().getRoster();
 
 					// top of turn affects e.g regen
+					if (CombatAI.hasPassiveAbility(currCombatant)) {
+						CombatAI.determinePassiveAction(currCombatant).doActionToTargets();
+					}
 
 					// take actions
 					event = CombatAI.determineAction(currCombatant, roster);

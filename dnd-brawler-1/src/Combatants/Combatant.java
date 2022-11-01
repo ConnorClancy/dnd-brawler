@@ -13,12 +13,12 @@ public class Combatant {
 	protected int ac;
 	protected int speed;
 	protected Statistics statistics;
-	//TODO add teams logic
 	protected String team = "";
 	
 	protected int initiative;
 	
 	protected ArrayList<Action> actions;
+	protected ArrayList<Action> passiveAbilities;
 
 	public Combatant(String name, int healthPoints, int ac, int speed, Statistics statistics)  throws CreationException {
 		if(statistics.isValid())
@@ -31,6 +31,7 @@ public class Combatant {
 			
 			this.maximumHealthPoints = this.healthPoints;
 			this.actions = new ArrayList<Action>();
+			this.passiveAbilities = new ArrayList<Action>();
 		} else {
 			throw new CreationException("Stats given are invalid");
 		}
@@ -91,6 +92,18 @@ public class Combatant {
 
 	public void addAction(Action action) {
 		this.actions.add(action);
+	}
+	
+	public ArrayList<Action> getPassiveAbilities() {
+		return passiveAbilities;
+	}
+	
+	public int getPassiveAbilityCount() {
+		return passiveAbilities.size();
+	}
+
+	public void addPassiveAbility(Action action) {
+		passiveAbilities.add(action);
 	}
 
 	public void updateName(String newName) {
