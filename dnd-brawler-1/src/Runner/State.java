@@ -42,5 +42,9 @@ public class State {
 	public boolean opposingCombatantsRemain() {
 		return roster.getBlueTeamCount() > 0 && roster.getRedTeamCount() > 0;
 	}
+
+	public int getCombatantCount() {
+		return roster.getBlueTeamCount() + roster.getRedTeamCount();
+	}
 	
 }

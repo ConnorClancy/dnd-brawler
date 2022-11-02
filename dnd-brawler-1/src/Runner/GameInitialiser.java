@@ -103,7 +103,7 @@ public class GameInitialiser {
 	    					case "attack":
 	    						A.addAction(
 	    								new AttackAction(
-	    										"attack", 
+	    										jo.getString("name"), 
 	    										jo.getInt("diceSides"),
 	    										jo.getInt("diceCount"),
 	    										jo.getInt("targetCount"),
@@ -132,7 +132,7 @@ public class GameInitialiser {
 		    					switch (jo.getString("type")) {
 		    					case "Regeneration":
 		    						A.addPassiveAbility(
-		    								new RegenerationAction("Regeneration", 0, 0, 0, 0, 0, jo.getInt("flatAmount")));
+		    								new RegenerationAction(jo.getString("name"), 0, 0, 0, 0, 0, jo.getInt("flatAmount")));
 		    						break;
 		    					default:
 		    						throw new CreationException("Passive Ability not recognised");

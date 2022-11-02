@@ -2,7 +2,7 @@ package Actions;
 
 public class Action {
 	
-	protected String type;
+	protected String name;
 	protected int diceSides;
 	protected int diceCount;
 	protected int targetCount;
@@ -12,14 +12,14 @@ public class Action {
 	
 	public Action
 	(
-			String type, 
+			String name, 
 			int diceSides, 
 			int diceCount, 
 			int targetCount, 
 			int repeats, 
 			int damageBonus
 	) {
-		this.type = type;
+		this.name = name;
 		this.diceSides = diceSides;
 		this.diceCount = diceCount;
 		this.targetCount = targetCount;
@@ -27,8 +27,8 @@ public class Action {
 		this.damageBonus = damageBonus;
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
 

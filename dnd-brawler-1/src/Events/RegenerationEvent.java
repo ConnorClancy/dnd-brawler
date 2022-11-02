@@ -27,9 +27,4 @@ public class RegenerationEvent implements Event {
 		System.out.println("Healed " + action.getFlatAmount() + "hp - new total: " + targetStack.get(0).getHealthPoints() + "hp");
 	}
 
-	@Override
-	public boolean combatantsRemoved() {
-		return false;
-	}
-
 }

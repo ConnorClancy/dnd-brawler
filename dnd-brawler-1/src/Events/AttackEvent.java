@@ -11,12 +11,10 @@ public class AttackEvent implements Event {
 	
 	protected AttackAction action;
 	protected Stack<Combatant> targetStack;
-	protected boolean combatantsRemoved;
 
 	public AttackEvent(AttackAction action, Stack<Combatant> targetStack) {
 		this.action = action;
 		this.targetStack = targetStack;
-		combatantsRemoved = false;
 	}
 
 	@Override
@@ -41,7 +39,7 @@ public class AttackEvent implements Event {
 
 			damageRoll += this.action.getDamageBonus();
 			
-			System.out.println("Rolls " + attackRoll + " to hit");
+			System.out.println("Rolls " + attackRoll + " to hit with its " + action.getName());
 
 			// do damage to target and check they aren't dead, if dead and targets remain
 			// then switch target, else end turn
@@ -54,9 +52,7 @@ public class AttackEvent implements Event {
 				
 				if (currentTarget.getHealthPoints() <= 0) {
 					State.getState().removeCombatant(currentTarget);
-					
-					combatantsRemoved = true;
-					
+										
 					if (this.targetStack.isEmpty()) {
 						return;
 					} else {
@@ -90,10 +86,4 @@ public class AttackEvent implements Event {
 			//better coding but less fun
 		}
 	}
-
-	@Override
-	public boolean combatantsRemoved() {
-		return combatantsRemoved;
-	}
-
 }

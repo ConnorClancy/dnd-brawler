@@ -36,7 +36,8 @@ public class GameRunner {
 				// Turn Loop
 				while (turnItr.hasNext() && State.getState().opposingCombatantsRemain()) {
 					
-					//throws exception when 
+					int numCombatantsTopOfTurn = State.getState().getCombatantCount();
+					
 					currCombatant = turnItr.next();
 					
 					System.out.println("Turn: " + currCombatant.toString());
@@ -53,7 +54,7 @@ public class GameRunner {
 
 					event.doActionToTargets();
 					
-					if(event.combatantsRemoved()) {
+					if(State.getState().getCombatantCount() < numCombatantsTopOfTurn) {
 						//reset iterator to avoid concurrent manipulation exception
 						turnItr = roster.listIterator();
 						while (turnItr.hasNext() && turnItr.next() != currCombatant) {
