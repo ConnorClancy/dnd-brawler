@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import Actions.AttackAction;
+import Actions.RegenerationAction;
 import Combatants.Combatant;
 import Combatants.CombatantSorter;
 import Combatants.Statistics;
@@ -23,7 +23,7 @@ public class GameInitialiser {
 	/*
 	 * Class creates the following
 	 * singleton State object
-	 * Combatants (for now manually, later maybe from JSON)
+	 * Combatants 
 	 * Created Actions and assigns to combatants
 	 * Future idea: env variables - things like light/no light, under water, per turn damage etc
 	 * 
@@ -89,29 +89,21 @@ public class GameInitialiser {
 	    				
 	    				A.setTeam(combatantJson.getString("team"));
 	    				
-	    				JSONArray actions = combatantJson.getJSONArray("actions");
+	    				//get all abilities and parse into respective sets
+	    				JSONObject abilities = combatantJson.getJSONObject("abilities");
+	    					    	
+	    				//get turn actions first
+	    				JSONArray actions = abilities.getJSONArray("actions");
+	    				
 	
 	    				for (int j = 0; j < actions.length(); j++) {
 	    					JSONObject jo = actions.getJSONObject(j);
 	
 	    					switch (jo.getString("type")) {
-	    					case "Melee Weapon Attack":
+	    					case "attack":
 	    						A.addAction(
 	    								new AttackAction(
-	    										"attack", 
-	    										jo.getInt("diceSides"),
-	    										jo.getInt("diceCount"),
-	    										jo.getInt("targetCount"),
-	    										jo.getInt("repeats"),
-	    										jo.getInt("toHitBonus"),
-	    										jo.getInt("damageBonus")
-	    										)
-	    								);
-	    						break;
-	    					case "Ranged Weapon Attack":
-	    						A.addAction(
-	    								new AttackAction(
-	    										"attack", 
+	    										jo.getString("name"), 
 	    										jo.getInt("diceSides"),
 	    										jo.getInt("diceCount"),
 	    										jo.getInt("targetCount"),
@@ -126,6 +118,31 @@ public class GameInitialiser {
 	    					}
 	    					
 	    				}
+	    				
+	    				if(abilities.has("passives")) {
+	    					
+	    					System.out.println("Passive abilities found");
+
+	    					JSONArray passiveAbilities = abilities.getJSONArray("passives");
+		    				
+		    				
+		    				for (int j = 0; j < passiveAbilities.length(); j++) {
+		    					JSONObject jo = passiveAbilities.getJSONObject(j);
+		    					
+		    					switch (jo.getString("type")) {
+		    					case "Regeneration":
+		    						A.addPassiveAbility(
+		    								new RegenerationAction(jo.getString("name"), 0, 0, 0, 0, 0, jo.getInt("flatAmount")));
+		    						break;
+		    					default:
+		    						throw new CreationException("Passive Ability not recognised");
+		    					}
+		    					
+		    				}
+	    				} else {
+	    					System.out.println("No passive abilities found");
+	    				}
+	    				
 
 						System.out.println(A.toString());
 						A.updateName(combatantJson.getString("name") + "-" + i);
