@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Actions.AttackAction;
+import Actions.MultiAction;
 import Actions.RegenerationAction;
 import Combatants.Combatant;
 import Combatants.CombatantSorter;
@@ -113,11 +114,30 @@ public class GameInitialiser {
 	    										)
 	    								);
 	    						break;
+	    					case "multiattack" :
+	    						
+	    						MultiAction multiAttack = new MultiAction(jo.getString("name"));
+	    						
+	    						JSONObject attackSequence = jo.getJSONObject("sequence");
+	    						
+	    						//add attack names and counts to MultiAction object;
+	    						
+	    						for (String attackName : attackSequence.keySet()) {
+									multiAttack.load(attackName, attackSequence.getInt(attackName));
+								}
+
+	    						A.addAction(multiAttack);
+	    						
+	    						break;
+	    						
 	    					default:
 	    						throw new CreationException("Action not recognised");
 	    					}
 	    					
 	    				}
+	    				
+	    				//if combatant has multiattack
+	    				//map.load(comb.getAction(multiAttackName1-X), get int);
 	    				
 	    				if(abilities.has("passives")) {
 	    					
@@ -132,7 +152,7 @@ public class GameInitialiser {
 		    					switch (jo.getString("type")) {
 		    					case "Regeneration":
 		    						A.addPassiveAbility(
-		    								new RegenerationAction(jo.getString("name"), 0, 0, 0, 0, 0, jo.getInt("flatAmount")));
+		    								new RegenerationAction(jo.getString("name"), jo.getInt("flatAmount")));
 		    						break;
 		    					default:
 		    						throw new CreationException("Passive Ability not recognised");
