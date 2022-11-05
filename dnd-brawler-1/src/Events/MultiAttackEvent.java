@@ -6,38 +6,50 @@ import java.util.Stack;
 import Actions.Action;
 import Actions.MultiAction;
 import Combatants.Combatant;
+import Exceptions.EventTypeException;
 
 public class MultiAttackEvent implements Event {
-	
-	protected MultiAction action;
-	protected Stack<Combatant> targetStack;
-	protected Combatant attacker;
 
-	public MultiAttackEvent(MultiAction action, Stack<Combatant> targetStack, Combatant attacker) {
+	protected MultiAction action;
+	protected Stack<Combatant> sourceTargetStack;
+	protected Stack<Combatant> copyTargetStack;
+
+	public MultiAttackEvent(MultiAction action, Stack<Combatant> targetStack) {
 		this.action = action;
-		this.targetStack = targetStack;
-		this.attacker = attacker;
+		this.sourceTargetStack = targetStack;
 	}
 
 	@Override
 	public void doActionToTargets() {
-		
-		//gets multiAction mapping
-		Map<String, Integer> attackSequence = action.getMultiActionMapping();
-		
-		//iterates over
-		attackSequence.forEach(
-	            (actionName, repeatCount)
-	                -> {
-	                	for (int i = 1; i <= repeatCount; i++) {
-	                		System.out.println(actionName + ": " + i + "/" + repeatCount);
-	                	}
-	                }
+
+		Map<Action, Integer> attackSequence = action.getMultiActionMapping();
+
+		EventFactory factory = EventFactory.getEventFactory();
+
+		attackSequence.forEach((action, repeatCount) -> {
+			for (int i = 1; i <= repeatCount; i++) {
+				System.out.println(action.getName() + ": " + i + "/" + repeatCount);
 				
-				);
-		
-		
-		//calls event factory for all internal events
+				if (!sourceTargetStack.isEmpty()) {
+
+					this.copyTargetStack = (Stack<Combatant>) this.sourceTargetStack.clone();
+
+					try {
+						
+						factory.createEvent(action, copyTargetStack).doActionToTargets();
+						
+						if (sourceTargetStack.peek().getHealthPoints() <= 0) {
+							sourceTargetStack.pop();
+						}
+						
+					} catch (EventTypeException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		);
 	}
 
 }
