@@ -21,7 +21,9 @@ public class CombatAI {
 		Stack<Combatant> targets = new Stack<Combatant>();
 
 		 //TODO choosing logic
-		targets.push(roster.getOpponents(currentCombatant).getFirst());
+		for (Combatant c : roster.getOpponents(currentCombatant)) {
+			targets.push(c);
+		}
 
 		EventFactory factory = EventFactory.getEventFactory();
 		

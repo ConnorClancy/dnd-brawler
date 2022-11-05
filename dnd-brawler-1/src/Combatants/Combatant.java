@@ -3,6 +3,7 @@ package Combatants;
 import java.util.ArrayList;
 
 import Actions.Action;
+import Exceptions.ActionNotExistException;
 import Exceptions.CreationException;
 
 public class Combatant {
@@ -14,6 +15,7 @@ public class Combatant {
 	protected int speed;
 	protected Statistics statistics;
 	protected String team = "";
+	protected boolean multiAttackAvailable = false;
 	
 	protected int initiative;
 	
@@ -89,6 +91,15 @@ public class Combatant {
 	public ArrayList<Action> getActions() {
 		return actions;
 	}
+	
+	public Action getAction(String nameOfActionNeeded) throws ActionNotExistException {
+		for (Action currentAction : this.actions) {
+			if(currentAction.getName().equals(nameOfActionNeeded)) {
+				return currentAction;
+			}
+		}	
+		throw new ActionNotExistException("Action not found - '" + nameOfActionNeeded + "' does not exist");
+	}
 
 	public void addAction(Action action) {
 		this.actions.add(action);
@@ -109,6 +120,14 @@ public class Combatant {
 	public void updateName(String newName) {
 		this.name = newName;
 		
+	}
+
+	public boolean isMultiAttackAvailable() {
+		return multiAttackAvailable;
+	}
+
+	public void setMultiAttackAvailable(boolean hasMultiAttack) {
+		this.multiAttackAvailable = hasMultiAttack;
 	}
 	
 }

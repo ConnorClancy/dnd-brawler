@@ -14,7 +14,7 @@ import Combatants.Statistics;
 class TestRegenerationEvent {
 	
 	private static final RegenerationAction RegenerationAction = 
-			new RegenerationAction("Regen", 0, 0, 0, 0, 0, 10);
+			new RegenerationAction("Regen", 10);
 	
 	protected Combatant combatant;
 	

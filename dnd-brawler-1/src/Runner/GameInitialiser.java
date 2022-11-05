@@ -4,16 +4,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import Actions.AttackAction;
+import Actions.MultiAction;
 import Actions.RegenerationAction;
 import Combatants.Combatant;
 import Combatants.CombatantSorter;
 import Combatants.Statistics;
+import Exceptions.ActionNotExistException;
 import Exceptions.CreationException;
 import Utilities.DiceBox;
 
@@ -113,10 +116,47 @@ public class GameInitialiser {
 	    										)
 	    								);
 	    						break;
+	    					case "multiattack" :
+	    						/*
+	    						 * Record names and repeat counts of each attack in multiAttack. 
+	    						 * After action parse loop provide MultiAction object with instantiated Actions
+	    						 * 
+	    						 */
+	    						MultiAction multiAttack = new MultiAction(jo.getString("name"));
+	    						
+	    						JSONObject jsonAttackSequence = jo.getJSONObject("sequence");
+	    							    						
+	    						for (String attackName : jsonAttackSequence.keySet()) {
+									multiAttack.loadNameMap(attackName, jsonAttackSequence.getInt(attackName));
+								}
+
+	    						A.addAction(multiAttack);
+	    						A.setMultiAttackAvailable(true);
+	    						
+	    						break;
+	    						
 	    					default:
 	    						throw new CreationException("Action not recognised");
 	    					}
 	    					
+	    				}
+	    				
+	    				//if combatant has multiattack
+	    				//map.load(comb.getAction(multiAttackName1-X), get int);
+	    				
+	    				if (A.isMultiAttackAvailable()) {
+	    					//get multiAction mapping
+	    					MultiAction multiAttack = (MultiAction)A.getAction("multiattack");
+	    					
+	    					Map<String, Integer> attackSequence = multiAttack.getMultiActionNameMapping();
+	    					
+	    					//iterates over mapping and adds actions as appropriate
+	    					for (String attackName : attackSequence.keySet()) {
+	    						multiAttack.loadActionMap(
+	    								A.getAction(attackName), 
+	    								attackSequence.get(attackName)
+	    								);
+	    					}
 	    				}
 	    				
 	    				if(abilities.has("passives")) {
@@ -132,7 +172,7 @@ public class GameInitialiser {
 		    					switch (jo.getString("type")) {
 		    					case "Regeneration":
 		    						A.addPassiveAbility(
-		    								new RegenerationAction(jo.getString("name"), 0, 0, 0, 0, 0, jo.getInt("flatAmount")));
+		    								new RegenerationAction(jo.getString("name"), jo.getInt("flatAmount")));
 		    						break;
 		    					default:
 		    						throw new CreationException("Passive Ability not recognised");
@@ -149,7 +189,7 @@ public class GameInitialiser {
 						field.add(A);
 					}
 		            
-				} catch (IOException | JSONException | CreationException e) {
+				} catch (IOException | JSONException | CreationException | ActionNotExistException e) {
 					System.out.println(e.getMessage());
 				}
 	        });

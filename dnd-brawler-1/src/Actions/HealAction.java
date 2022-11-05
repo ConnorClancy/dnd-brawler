@@ -12,9 +12,9 @@ public class HealAction extends Action {
 	protected boolean overHeal;
 	protected int flatAmount;
 
-	public HealAction(String type, int diceSides, int diceCount, int targetCount, int repeats,
+	public HealAction(String name, int diceSides, int diceCount, int targetCount, int repeats,
 			int bonus, boolean overHeal, int flatAmount) {
-		super(type, diceSides, diceCount, targetCount, repeats, bonus);
+		super(name);
 
 		this.overHeal = overHeal;
 		this.flatAmount = flatAmount;
