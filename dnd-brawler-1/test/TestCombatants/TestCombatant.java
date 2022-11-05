@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Actions.Action;
+import Actions.AttackAction;
 import Combatants.Combatant;
 import Combatants.Statistics;
 import Exceptions.CreationException;
@@ -88,13 +89,13 @@ class TestCombatant {
 	@Test
 	void testAddAction() {
 		
-		Action A = new Action("test", 1 ,1, 1, 1, 1);
+		AttackAction A = new AttackAction("test", 1 ,1, 1, 1, 1, 0);
 		
 		combatant.addAction(A);
 		
-		assertEquals(A.getDamageBonus(), combatant.getActions().get(0).getDamageBonus());
-		assertEquals(A.getDiceCount(), combatant.getActions().get(0).getDiceCount());
-		assertEquals(A.getRepeats(), combatant.getActions().get(0).getRepeats());
+		assertEquals(A.getDamageBonus(), ((AttackAction) combatant.getActions().get(0)).getDamageBonus());
+		assertEquals(A.getDiceCount(), ((AttackAction) combatant.getActions().get(0)).getDiceCount());
+		assertEquals(A.getRepeats(), ((AttackAction) combatant.getActions().get(0)).getRepeats());
 	
 	}
 	
