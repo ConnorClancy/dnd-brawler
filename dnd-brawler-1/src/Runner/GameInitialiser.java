@@ -20,6 +20,10 @@ import Exceptions.ActionNotExistException;
 import Exceptions.CreationException;
 import Utilities.DiceBox;
 
+import static Utilities.ActionDirectory.ATTACK_TYPE;
+import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
+import static Utilities.ActionDirectory.REGENERATION_TYPE;
+
 
 public class GameInitialiser {
 
@@ -103,7 +107,7 @@ public class GameInitialiser {
 	    					JSONObject jo = actions.getJSONObject(j);
 	
 	    					switch (jo.getString("type")) {
-	    					case "attack":
+	    					case ATTACK_TYPE:
 	    						A.addAction(
 	    								new AttackAction(
 	    										jo.getString("name"), 
@@ -116,7 +120,7 @@ public class GameInitialiser {
 	    										)
 	    								);
 	    						break;
-	    					case "multiattack" :
+	    					case MULTI_ATTACK_TYPE :
 	    						/*
 	    						 * Record names and repeat counts of each attack in multiAttack. 
 	    						 * After action parse loop provide MultiAction object with instantiated Actions
@@ -170,7 +174,7 @@ public class GameInitialiser {
 		    					JSONObject jo = passiveAbilities.getJSONObject(j);
 		    					
 		    					switch (jo.getString("type")) {
-		    					case "Regeneration":
+		    					case REGENERATION_TYPE:
 		    						A.addPassiveAbility(
 		    								new RegenerationAction(jo.getString("name"), jo.getInt("flatAmount")));
 		    						break;

@@ -2,12 +2,15 @@ package Utilities;
 
 import java.util.Stack;
 import Actions.Action;
+import Actions.AoeAttackAction;
 import Actions.AttackAction;
+import Actions.MultiAction;
 import Actions.RegenerationAction;
 import Combatants.Combatant;
 import Events.Event;
 import Events.EventFactory;
 import Events.RegenerationEvent;
+import Exceptions.ActionNotExistException;
 import Exceptions.EventTypeException;
 
 public class CombatAI {
@@ -16,7 +19,22 @@ public class CombatAI {
 	public static Event determineAction(Combatant currentCombatant, CombatRoster roster) {
 		
 		//TODO add choosing logic
-		Action chosenAction = currentCombatant.getActions().get(0);
+		Action chosenAction = null;
+		
+		try {
+			if (currentCombatant.isMultiAttackAvailable()) {
+				chosenAction = currentCombatant.getActionByType(MultiAction.class);
+				System.out.println("multiattack found");
+			} else if (currentCombatant.isAoeAttackAvailable()) {
+				chosenAction = currentCombatant.getActionByType(AoeAttackAction.class);
+				System.out.println("multiattack found");
+			} else {
+				chosenAction = currentCombatant.getActions().get(0);
+			}
+		} catch (ActionNotExistException e) {
+			e.printStackTrace();
+			chosenAction = currentCombatant.getActions().get(0);
+		}
 
 		Stack<Combatant> targets = new Stack<Combatant>();
 
