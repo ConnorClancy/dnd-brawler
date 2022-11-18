@@ -1,5 +1,10 @@
 package Runner;
 
+import static Utilities.ActionDirectory.AOE_TYPE;
+import static Utilities.ActionDirectory.ATTACK_TYPE;
+import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
+import static Utilities.ActionDirectory.REGENERATION_TYPE;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Actions.AoeAttackAction;
 import Actions.AttackAction;
 import Actions.MultiAction;
 import Actions.RegenerationAction;
@@ -19,10 +25,6 @@ import Combatants.Statistics;
 import Exceptions.ActionNotExistException;
 import Exceptions.CreationException;
 import Utilities.DiceBox;
-
-import static Utilities.ActionDirectory.ATTACK_TYPE;
-import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
-import static Utilities.ActionDirectory.REGENERATION_TYPE;
 
 
 public class GameInitialiser {
@@ -138,7 +140,20 @@ public class GameInitialiser {
 	    						A.setMultiAttackAvailable(true);
 	    						
 	    						break;
-	    						
+	    					case AOE_TYPE:
+	    						A.addAction(
+	    							new AoeAttackAction(
+	    								jo.getString("name"), 
+	    								jo.getInt("range"), 
+	    								jo.getInt("dc"), 
+	    								jo.getString("saveType"), 
+	    								jo.getBoolean("halfOnSuccess"), 
+	    								jo.getInt("diceSides"),
+										jo.getInt("diceCount")
+									)
+								);
+	    						A.setAoeAttackAvailable(true);
+	    						break;	    					
 	    					default:
 	    						throw new CreationException("Action not recognised");
 	    					}

@@ -147,5 +147,27 @@ public class Combatant {
 	public void setAoeAttackAvailable(boolean hasAoeAttack) {
 		this.aoeAttackAvailable = hasAoeAttack;
 	}
+
+	public int getStatBonus(String saveType) {
+		
+		switch (saveType) {
+		
+		case "strength":
+			return statistics.getStrength();
+		case "dexterity":
+			return statistics.getDexterity();
+		case "constitusion":
+			return statistics.getCon();
+		case "intelligence":
+			return statistics.getIntelligence();
+		case "wisdom":
+			return statistics.getWis();
+		case "charisma":
+			return statistics.getCha();
+		default:
+			return 0;		
+		}
+		
+	}
 	
 }

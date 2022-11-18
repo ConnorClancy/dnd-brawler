@@ -27,7 +27,7 @@ public class CombatAI {
 				System.out.println("multiattack found");
 			} else if (currentCombatant.isAoeAttackAvailable()) {
 				chosenAction = currentCombatant.getActionByType(AoeAttackAction.class);
-				System.out.println("multiattack found");
+				System.out.println("Aoe found and available");
 			} else {
 				chosenAction = currentCombatant.getActions().get(0);
 			}

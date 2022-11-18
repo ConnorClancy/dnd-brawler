@@ -1,0 +1,42 @@
+{
+	"name" : "Green Dragon Wyrling",
+	"healthPoints" : "38",
+	"armourClass" : "17",
+	"speed" : "30",
+	"team" : "blue",
+	"statistics" : {
+		"strength" : "2",
+		"dexterity" : "1",
+		"constitusion" : "1",
+		"intelligence" : "0",
+		"wisdom" : "1",
+		"charisma" : "1"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "attack",
+				"name" : "Bite",
+				"diceSides" : "10",
+				"diceCount" : "1",
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "4",
+				"damageBonus" : "2",
+				"rangeLower" : "5",
+				"rangeUpper" : "5"
+			},
+			{
+				"type" : "aoeAttack",
+				"name" : "Poison Breath",
+				"range" : "15",
+				"dc" : "11",
+				"saveType" : "constitusion",
+				"halfOnSuccess" : "true",
+				"diceSides" : "6",
+				"diceCount" : "6"
+			}	
+		]
+	},
+	"amountOfCreatureInCombat" : "1"
+}
