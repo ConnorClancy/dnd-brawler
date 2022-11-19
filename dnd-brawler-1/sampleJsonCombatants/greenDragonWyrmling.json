@@ -36,6 +36,15 @@
 				"diceSides" : "6",
 				"diceCount" : "6"
 			}	
+		],
+		"passives": [
+			{
+				"type" : "aoeRecharge",
+				"name" : "AOE Recharge",
+				"rechargeDieSides" : "6",
+				"successBoundLower" : "5",
+				"successBoundUpper" : "6"
+			}
 		]
 	},
 	"amountOfCreatureInCombat" : "1"

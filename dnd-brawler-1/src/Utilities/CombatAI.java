@@ -1,15 +1,15 @@
 package Utilities;
 
 import java.util.Stack;
+
 import Actions.Action;
 import Actions.AoeAttackAction;
-import Actions.AttackAction;
+import Actions.AoeRechargeAction;
 import Actions.MultiAction;
 import Actions.RegenerationAction;
 import Combatants.Combatant;
 import Events.Event;
 import Events.EventFactory;
-import Events.RegenerationEvent;
 import Exceptions.ActionNotExistException;
 import Exceptions.EventTypeException;
 
@@ -25,9 +25,15 @@ public class CombatAI {
 			if (currentCombatant.isMultiAttackAvailable()) {
 				chosenAction = currentCombatant.getActionByType(MultiAction.class);
 				System.out.println("multiattack found");
+				
 			} else if (currentCombatant.isAoeAttackAvailable()) {
+				
 				chosenAction = currentCombatant.getActionByType(AoeAttackAction.class);
+				
+				currentCombatant.setAoeAttackAvailable(false);
+				
 				System.out.println("Aoe found and available");
+				
 			} else {
 				chosenAction = currentCombatant.getActions().get(0);
 			}
@@ -65,7 +71,7 @@ public static Event determinePassiveAction(Combatant currentCombatant) {
 		
 		Stack<Combatant> targets = new Stack<Combatant>();
 		
-		if (chosenAction instanceof RegenerationAction) {
+		if (chosenAction instanceof RegenerationAction || chosenAction instanceof AoeRechargeAction) {
 			targets.add(currentCombatant);
 		}
 		

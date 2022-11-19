@@ -1,6 +1,7 @@
 package Runner;
 
 import static Utilities.ActionDirectory.AOE_TYPE;
+import static Utilities.ActionDirectory.AOE_RECHARGE_TYPE;
 import static Utilities.ActionDirectory.ATTACK_TYPE;
 import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
 import static Utilities.ActionDirectory.REGENERATION_TYPE;
@@ -16,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Actions.AoeAttackAction;
+import Actions.AoeRechargeAction;
 import Actions.AttackAction;
 import Actions.MultiAction;
 import Actions.RegenerationAction;
@@ -192,6 +194,16 @@ public class GameInitialiser {
 		    					case REGENERATION_TYPE:
 		    						A.addPassiveAbility(
 		    								new RegenerationAction(jo.getString("name"), jo.getInt("flatAmount")));
+		    						break;
+		    					case AOE_RECHARGE_TYPE:
+		    						A.addPassiveAbility(
+		    								new AoeRechargeAction(
+		    										jo.getString("name"), 
+		    										jo.getInt("rechargeDieSides"),
+		    										jo.getInt("successBoundLower"),
+		    										jo.getInt("successBoundUpper")
+		    									)
+		    								);
 		    						break;
 		    					default:
 		    						throw new CreationException("Passive Ability not recognised");
