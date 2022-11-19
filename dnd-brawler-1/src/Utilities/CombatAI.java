@@ -1,10 +1,12 @@
 package Utilities;
 
+import java.util.Random;
 import java.util.Stack;
 
 import Actions.Action;
 import Actions.AoeAttackAction;
 import Actions.AoeRechargeAction;
+import Actions.AttackAction;
 import Actions.MultiAction;
 import Actions.RegenerationAction;
 import Combatants.Combatant;
@@ -35,7 +37,7 @@ public class CombatAI {
 				System.out.println("Aoe found and available");
 				
 			} else {
-				chosenAction = currentCombatant.getActions().get(0);
+				chosenAction = currentCombatant.getActionByType(AttackAction.class);
 			}
 		} catch (ActionNotExistException e) {
 			e.printStackTrace();
@@ -45,8 +47,42 @@ public class CombatAI {
 		Stack<Combatant> targets = new Stack<Combatant>();
 
 		 //TODO choosing logic
-		for (Combatant c : roster.getOpponents(currentCombatant)) {
-			targets.push(c);
+		if (chosenAction instanceof AoeAttackAction) {
+			
+			//represents the number of quarters of opponents targeted by AOE, i.e 1 implies 25%, 2 implies 50%
+			int[] aoeHitDistribution = new int[] {1, 1, 1, 2, 2, 2, 2, 3, 3, 4};
+			
+			Random selector = new Random();
+			int selectedIndex = selector.nextInt(0, aoeHitDistribution.length);
+			int selectedDistribution = aoeHitDistribution[selectedIndex];
+			
+			int numOpponents = roster.getOpponentCount(currentCombatant);
+			int targetCount;
+			
+			if (numOpponents <= 4) {				
+				targetCount = Math.min(numOpponents, selectedDistribution);
+			} else {
+				//divide opponent count by 4, multiply by distribution, round down if needed
+				double n = (numOpponents/4.0) * selectedDistribution;
+				targetCount = (int) Math.floor(n);
+			}
+			
+			System.out.println("targets selected: " + targetCount);
+			
+			int targetsAdded = 0;
+			for (Combatant c : roster.getOpponents(currentCombatant)) {
+				targets.push(c);
+				targetsAdded++;
+				
+				if (targetsAdded >= targetCount) {
+					break;
+				}
+			}
+			
+		} else {
+			for (Combatant c : roster.getOpponents(currentCombatant)) {
+				targets.push(c);
+			}
 		}
 
 		EventFactory factory = EventFactory.getEventFactory();
