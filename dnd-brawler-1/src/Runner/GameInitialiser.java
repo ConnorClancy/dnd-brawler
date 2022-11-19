@@ -1,5 +1,11 @@
 package Runner;
 
+import static Utilities.ActionDirectory.AOE_TYPE;
+import static Utilities.ActionDirectory.AOE_RECHARGE_TYPE;
+import static Utilities.ActionDirectory.ATTACK_TYPE;
+import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
+import static Utilities.ActionDirectory.REGENERATION_TYPE;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Actions.AoeAttackAction;
+import Actions.AoeRechargeAction;
 import Actions.AttackAction;
 import Actions.MultiAction;
 import Actions.RegenerationAction;
@@ -103,7 +111,7 @@ public class GameInitialiser {
 	    					JSONObject jo = actions.getJSONObject(j);
 	
 	    					switch (jo.getString("type")) {
-	    					case "attack":
+	    					case ATTACK_TYPE:
 	    						A.addAction(
 	    								new AttackAction(
 	    										jo.getString("name"), 
@@ -116,7 +124,7 @@ public class GameInitialiser {
 	    										)
 	    								);
 	    						break;
-	    					case "multiattack" :
+	    					case MULTI_ATTACK_TYPE :
 	    						/*
 	    						 * Record names and repeat counts of each attack in multiAttack. 
 	    						 * After action parse loop provide MultiAction object with instantiated Actions
@@ -134,7 +142,20 @@ public class GameInitialiser {
 	    						A.setMultiAttackAvailable(true);
 	    						
 	    						break;
-	    						
+	    					case AOE_TYPE:
+	    						A.addAction(
+	    							new AoeAttackAction(
+	    								jo.getString("name"), 
+	    								jo.getInt("range"), 
+	    								jo.getInt("dc"), 
+	    								jo.getString("saveType"), 
+	    								jo.getBoolean("halfOnSuccess"), 
+	    								jo.getInt("diceSides"),
+										jo.getInt("diceCount")
+									)
+								);
+	    						A.setAoeAttackAvailable(true);
+	    						break;	    					
 	    					default:
 	    						throw new CreationException("Action not recognised");
 	    					}
@@ -170,9 +191,19 @@ public class GameInitialiser {
 		    					JSONObject jo = passiveAbilities.getJSONObject(j);
 		    					
 		    					switch (jo.getString("type")) {
-		    					case "Regeneration":
+		    					case REGENERATION_TYPE:
 		    						A.addPassiveAbility(
 		    								new RegenerationAction(jo.getString("name"), jo.getInt("flatAmount")));
+		    						break;
+		    					case AOE_RECHARGE_TYPE:
+		    						A.addPassiveAbility(
+		    								new AoeRechargeAction(
+		    										jo.getString("name"), 
+		    										jo.getInt("rechargeDieSides"),
+		    										jo.getInt("successBoundLower"),
+		    										jo.getInt("successBoundUpper")
+		    									)
+		    								);
 		    						break;
 		    					default:
 		    						throw new CreationException("Passive Ability not recognised");

@@ -16,6 +16,7 @@ public class Combatant {
 	protected Statistics statistics;
 	protected String team = "";
 	protected boolean multiAttackAvailable = false;
+	protected boolean aoeAttackAvailable = false;
 	
 	protected int initiative;
 	
@@ -100,6 +101,15 @@ public class Combatant {
 		}	
 		throw new ActionNotExistException("Action not found - '" + nameOfActionNeeded + "' does not exist");
 	}
+	
+	public <T> Action getActionByType(Class<T> type) throws ActionNotExistException {
+		for (Action currentAction : this.actions) {
+			if(type.isInstance(currentAction)) {
+				return currentAction;
+			}
+		}	
+		throw new ActionNotExistException("Action not found - '" + type + "' does not exist");
+	}
 
 	public void addAction(Action action) {
 		this.actions.add(action);
@@ -128,6 +138,36 @@ public class Combatant {
 
 	public void setMultiAttackAvailable(boolean hasMultiAttack) {
 		this.multiAttackAvailable = hasMultiAttack;
+	}
+
+	public boolean isAoeAttackAvailable() {
+		return aoeAttackAvailable;
+	}
+	
+	public void setAoeAttackAvailable(boolean hasAoeAttack) {
+		this.aoeAttackAvailable = hasAoeAttack;
+	}
+
+	public int getStatBonus(String saveType) {
+		
+		switch (saveType) {
+		
+		case "strength":
+			return statistics.getStrength();
+		case "dexterity":
+			return statistics.getDexterity();
+		case "constitusion":
+			return statistics.getCon();
+		case "intelligence":
+			return statistics.getIntelligence();
+		case "wisdom":
+			return statistics.getWis();
+		case "charisma":
+			return statistics.getCha();
+		default:
+			return 0;		
+		}
+		
 	}
 	
 }
