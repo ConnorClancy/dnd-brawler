@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import Actions.Action;
 import Actions.AttackAction;
+import Actions.DamageDie;
 import Combatants.Combatant;
 import Combatants.Statistics;
 import Exceptions.CreationException;
@@ -24,6 +25,9 @@ import Exceptions.CreationException;
 class TestCombatant {
 	
 	protected Combatant combatant;
+	
+	private static final String[] RESTISTANCES = {};
+	private static final String[] VULNERABILITIES = {};
 
 	/**
 	 * @throws java.lang.Exception
@@ -47,7 +51,7 @@ class TestCombatant {
 			);
 		
 		try {
-			combatant = new Combatant("Skeleton", 13, 13, 30, validStats);
+			combatant = new Combatant("Skeleton", 13, 13, 30, validStats, RESTISTANCES, VULNERABILITIES);
 		} catch (CreationException e) {
 			e.printStackTrace();
 		}
@@ -75,11 +79,11 @@ class TestCombatant {
 			);
 		
 		assertDoesNotThrow(() -> {
-			combatant = new Combatant("Skeleton", 13, 13, 30, validStats);
+			combatant = new Combatant("Skeleton", 13, 13, 30, validStats, RESTISTANCES, VULNERABILITIES);
 		});
 
 		CreationException exception = assertThrows(CreationException.class, () -> {
-			combatant = new Combatant("Skeleton", 13, 13, 30, invalidStats);
+			combatant = new Combatant("Skeleton", 13, 13, 30, invalidStats, RESTISTANCES, VULNERABILITIES);
 		});
 		
 		assertEquals("Stats given are invalid", exception.getMessage());
@@ -89,13 +93,25 @@ class TestCombatant {
 	@Test
 	void testAddAction() {
 		
-		AttackAction A = new AttackAction("test", 1 ,1, 1, 1, 1, 0);
+		DamageDie[] dice1 = 
+			{new DamageDie(1, 1, 0, "type")};
+		
+		AttackAction A = new AttackAction("test", 1, 1, 1, dice1);
 		
 		combatant.addAction(A);
 		
-		assertEquals(A.getDamageBonus(), ((AttackAction) combatant.getActions().get(0)).getDamageBonus());
-		assertEquals(A.getDiceCount(), ((AttackAction) combatant.getActions().get(0)).getDiceCount());
-		assertEquals(A.getRepeats(), ((AttackAction) combatant.getActions().get(0)).getRepeats());
+		assertEquals(
+				A.getDamageDice()[0].getDamageBonus(), 
+				((AttackAction) combatant.getActions().get(0)).getDamageDice()[0].getDamageBonus()
+				);
+		assertEquals(
+				A.getDamageDice()[0].getDiceCount(), 
+				((AttackAction) combatant.getActions().get(0)).getDamageDice()[0].getDiceCount()
+				);
+		assertEquals(
+				A.getRepeats(), 
+				((AttackAction) combatant.getActions().get(0)).getRepeats()
+				);
 	
 	}
 	

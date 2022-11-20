@@ -4,6 +4,7 @@
 	"armourClass" : "17",
 	"speed" : "50",
 	"team" : "blue",
+	"restistances" : ["poison", "psychic"],
 	"statistics" : {
 		"strength" : "1",
 		"dexterity" : "2",
@@ -17,12 +18,17 @@
 			{
 				"type" : "attack",
 				"name" : "Longsword",
-				"diceSides" : "8",
-				"diceCount" : "1",
+				"dice" : [
+					{
+						"sides" : "8",
+						"count" : "1",
+						"damageBonus" : "1",
+						"damageType" : "slashing"
+					}
+				],
 				"targetCount" : "1",
 				"repeats" : "1",
 				"toHitBonus" : "3",
-				"damageBonus" : "1",
 				"rangeLower" : "5",
 				"rangeUpper" : "5"
 			}	

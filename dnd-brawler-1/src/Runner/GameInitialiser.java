@@ -1,7 +1,7 @@
 package Runner;
 
-import static Utilities.ActionDirectory.AOE_TYPE;
 import static Utilities.ActionDirectory.AOE_RECHARGE_TYPE;
+import static Utilities.ActionDirectory.AOE_TYPE;
 import static Utilities.ActionDirectory.ATTACK_TYPE;
 import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
 import static Utilities.ActionDirectory.REGENERATION_TYPE;
@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import Actions.AoeAttackAction;
 import Actions.AoeRechargeAction;
 import Actions.AttackAction;
+import Actions.DamageDie;
 import Actions.MultiAction;
 import Actions.RegenerationAction;
 import Combatants.Combatant;
@@ -77,6 +78,18 @@ public class GameInitialiser {
 	    			JSONObject combatantJson = new JSONObject(str);
 
     				JSONObject stats = combatantJson.getJSONObject("statistics");
+
+    				String[] restiancesArr = {};
+    				if (combatantJson.has("restistances")) {
+    					JSONArray resistancesInput = combatantJson.getJSONArray("restistances");
+    					restiancesArr = resistancesInput.toList().toArray(restiancesArr);
+    				}
+    				
+    				String[] vulnerabilitiesArr = {};
+    				if (combatantJson.has("vulnerabilities")) {
+    					JSONArray vulnInput = combatantJson.getJSONArray("vulnerabilities");
+    					vulnerabilitiesArr = vulnInput.toList().toArray(vulnerabilitiesArr);
+    				}
     				
     				
 	    			int m = combatantJson.getInt("amountOfCreatureInCombat");
@@ -95,7 +108,9 @@ public class GameInitialiser {
 	    								stats.getInt("intelligence"),
 	    								stats.getInt("wisdom"),
 	    								stats.getInt("charisma")
-	    								)
+	    								),
+	    						restiancesArr,
+	    						vulnerabilitiesArr
 	    						);
 	    				
 	    				A.setTeam(combatantJson.getString("team"));
@@ -112,15 +127,31 @@ public class GameInitialiser {
 	
 	    					switch (jo.getString("type")) {
 	    					case ATTACK_TYPE:
+	    						
+	    						JSONArray diceData = jo.getJSONArray("dice");
+	    						
+	    						ArrayList<DamageDie> diceArrL = new ArrayList<DamageDie>();
+	    						
+	    						for (int diceCount = 0; diceCount < diceData.length(); diceCount++) {
+	    							JSONObject dieData = diceData.getJSONObject(diceCount);
+	    							diceArrL.add(new DamageDie(
+	    									dieData.getInt("sides"), 
+	    									dieData.getInt("count"), 
+	    									dieData.getInt("damageBonus"), 
+	    									dieData.getString("damageType")
+	    									)
+	    								);
+	    						}
+	    						
+	    						DamageDie diceArr[] = new DamageDie[diceArrL.size()];
+	    						
 	    						A.addAction(
 	    								new AttackAction(
-	    										jo.getString("name"), 
-	    										jo.getInt("diceSides"),
-	    										jo.getInt("diceCount"),
+	    										jo.getString("name"), 	    										
 	    										jo.getInt("targetCount"),
 	    										jo.getInt("repeats"),
 	    										jo.getInt("toHitBonus"),
-	    										jo.getInt("damageBonus")
+	    										diceArrL.toArray(diceArr)
 	    										)
 	    								);
 	    						break;
@@ -151,7 +182,8 @@ public class GameInitialiser {
 	    								jo.getString("saveType"), 
 	    								jo.getBoolean("halfOnSuccess"), 
 	    								jo.getInt("diceSides"),
-										jo.getInt("diceCount")
+										jo.getInt("diceCount"),
+										jo.getString("damageType")
 									)
 								);
 	    						A.setAoeAttackAvailable(true);

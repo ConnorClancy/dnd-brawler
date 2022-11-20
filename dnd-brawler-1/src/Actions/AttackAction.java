@@ -3,35 +3,21 @@ package Actions;
 public class AttackAction extends Action {
 	
 	protected int toHitBonus;
-	protected int diceSides;
-	protected int diceCount;
 	protected int targetCount;
 	protected int repeats;
-	protected int damageBonus;
+	protected DamageDie damageDice[];
 
-	public AttackAction(String name, int diceSides, int diceCount, int targetCount, int repeats, int toHitBonus,
-			int damageBonus) {
+	public AttackAction(String name, int targetCount, int repeats, int toHitBonus, DamageDie damageDice[]) {
 		super(name);
-		this.diceSides = diceSides;
-		this.diceCount = diceCount;
 		this.targetCount = targetCount;
 		this.repeats = repeats;
-		this.damageBonus = damageBonus;
 		this.toHitBonus = toHitBonus;
+		this.damageDice = damageDice;
 	}
 	
 
 	public int getToHitBonus() {
 		return toHitBonus;
-	}
-
-	public int getDiceSides() {
-		return diceSides;
-	}
-
-
-	public int getDiceCount() {
-		return diceCount;
 	}
 
 
@@ -43,10 +29,9 @@ public class AttackAction extends Action {
 	public int getRepeats() {
 		return repeats;
 	}
-
-
-	public int getDamageBonus() {
-		return damageBonus;
+	
+	public DamageDie[] getDamageDice() {
+		return damageDice;
 	}
 
 }

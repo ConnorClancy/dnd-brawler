@@ -15,13 +15,16 @@ import Combatants.Statistics;
 class TestAoeAttack {
 
 	private static final AoeAttackAction AOE_10_DAM_ACTION = 
-			new AoeAttackAction("My Aoe", 100, 30, "strength", false, 1, 10);
+			new AoeAttackAction("My Aoe", 100, 30, "strength", false, 1, 10, "test");
 	
 	private static final AoeAttackAction AOE_FULL_DAM_ACTION = 
-			new AoeAttackAction("My Aoe", 100, 30, "strength", false, 6, 10);
+			new AoeAttackAction("My Aoe", 100, 30, "strength", false, 6, 10, "test");
 	
 	private static final AoeAttackAction AOE_HALF_DAM_ACTION = 
-			new AoeAttackAction("My Aoe", 100, 0, "strength", true, 6, 10);
+			new AoeAttackAction("My Aoe", 100, 0, "strength", true, 6, 10, "test");
+	
+	private static final String[] RESTISTANCES = {};
+	private static final String[] VULNERABILITIES = {};
 
 	protected Combatant combatant1;
 	protected Combatant combatant2;
@@ -46,7 +49,9 @@ class TestAoeAttack {
 						0, 
 						0, 
 						0
-						)
+						),
+				RESTISTANCES, 
+				VULNERABILITIES
 				);
 		
 		combatant2 = new Combatant(
@@ -61,7 +66,9 @@ class TestAoeAttack {
 						0, 
 						0, 
 						0
-						)
+						),
+				RESTISTANCES, 
+				VULNERABILITIES
 				);
 				
 		
@@ -77,7 +84,9 @@ class TestAoeAttack {
 						0, 
 						0, 
 						0
-						)
+						),
+				RESTISTANCES, 
+				VULNERABILITIES
 				);
 				
 				

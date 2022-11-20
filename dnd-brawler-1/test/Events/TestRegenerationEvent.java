@@ -18,6 +18,9 @@ class TestRegenerationEvent {
 	
 	protected Combatant combatant;
 	
+	private static final String[] RESTISTANCES = {};
+	private static final String[] VULNERABILITIES = {};
+	
 	protected RegenerationEvent testEvent;
 
 	@BeforeEach
@@ -35,7 +38,9 @@ class TestRegenerationEvent {
 						0, 
 						0, 
 						0
-						)
+						),
+				RESTISTANCES, 
+				VULNERABILITIES
 				);
 		
 		Stack<Combatant> targetStack = new Stack<Combatant>();
