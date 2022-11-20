@@ -36,7 +36,8 @@ public class GameRunner {
 				// Turn Loop
 				while (turnItr.hasNext() && State.getState().opposingCombatantsRemain()) {
 					
-					//throws exception when 
+					int numCombatantsTopOfTurn = State.getState().getCombatantCount();
+					
 					currCombatant = turnItr.next();
 					
 					System.out.println("Turn: " + currCombatant.toString());
@@ -44,13 +45,16 @@ public class GameRunner {
 					roster = State.getState().getRoster();
 
 					// top of turn affects e.g regen
+					if (CombatAI.hasPassiveAbility(currCombatant)) {
+						CombatAI.determinePassiveAction(currCombatant).doActionToTargets();
+					}
 
 					// take actions
 					event = CombatAI.determineAction(currCombatant, roster);
 
 					event.doActionToTargets();
 					
-					if(event.combatantsRemoved()) {
+					if(State.getState().getCombatantCount() < numCombatantsTopOfTurn) {
 						//reset iterator to avoid concurrent manipulation exception
 						turnItr = roster.listIterator();
 						while (turnItr.hasNext() && turnItr.next() != currCombatant) {

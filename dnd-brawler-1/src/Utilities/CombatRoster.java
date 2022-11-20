@@ -57,6 +57,14 @@ public class CombatRoster extends LinkedList<Combatant> {
 		return redTeamCount;
 	}
 	
+	public int getOpponentCount(Combatant asker) {
+		if (asker.getTeam().equals("blue")) {
+			return getRedTeamCount();
+		} else {
+			return getBlueTeamCount();
+		}
+	}
+ 	
 	public int reduceTeamCount(String team) {
 		
 		if ((team.equals("blue"))) {

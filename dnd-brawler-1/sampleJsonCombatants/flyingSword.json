@@ -4,6 +4,7 @@
 	"armourClass" : "17",
 	"speed" : "50",
 	"team" : "blue",
+	"restistances" : ["poison", "psychic"],
 	"statistics" : {
 		"strength" : "1",
 		"dexterity" : "2",
@@ -12,18 +13,26 @@
 		"wisdom" : "-3",
 		"charisma" : "-5"
 	},
-	"actions" : [
-		{
-			"type" : "Melee Weapon Attack",
-			"diceSides" : "8",
-			"diceCount" : "1",
-			"targetCount" : "1",
-			"repeats" : "1",
-			"toHitBonus" : "3",
-			"damageBonus" : "1",
-			"rangeLower" : "5",
-			"rangeUpper" : "5"
-		}	
-	],
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "attack",
+				"name" : "Longsword",
+				"dice" : [
+					{
+						"sides" : "8",
+						"count" : "1",
+						"damageBonus" : "1",
+						"damageType" : "slashing"
+					}
+				],
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "3",
+				"rangeLower" : "5",
+				"rangeUpper" : "5"
+			}	
+		]
+	},
 	"amountOfCreatureInCombat" : "2"
 }

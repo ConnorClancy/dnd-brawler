@@ -4,6 +4,8 @@
 	"armourClass" : "13",
 	"speed" : "30",
 	"team" : "red",
+	"restistances" : ["poison", "sass"],
+	"vulnerabilities" : ["bludgeoning"],
 	"statistics" : {
 		"strength" : "0",
 		"dexterity" : "2",
@@ -12,29 +14,43 @@
 		"wisdom" : "-1",
 		"charisma" : "-3"
 	},
-	"actions" : [
-		{
-			"type" : "Melee Weapon Attack",
-			"diceSides" : "6",
-			"diceCount" : "1",
-			"targetCount" : "1",
-			"repeats" : "1",
-			"toHitBonus" : "4",
-			"damageBonus" : "2",
-			"rangeLower" : "5",
-			"rangeUpper" : "5"
-		},
-		{
-		    "type" : "Ranged Weapon Attack",
-			"diceSides" : "6",
-			"diceCount" : "1",
-			"targetCount" : "1",
-			"repeats" : "1",
-			"toHitBonus" : "4",
-			"damageBonus" : "2",
-			"rangeLower" : "80",
-			"rangeUpper" : "320"
-		}		
-	],
-	"amountOfCreatureInCombat" : "3"
+	"abilities" : {
+		"actions" : [
+			{
+				"type": "attack",
+				"name" : "Shortsword",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "1",
+						"damageBonus" : "2",
+						"damageType" : "piercing"
+					}
+				],				
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "4",				
+				"rangeLower" : "5",
+				"rangeUpper" : "5"
+			},
+			{
+			    "type": "attack",
+				"name" : "shortbow",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "1",
+						"damageBonus" : "2",
+						"damageType" : "piercing"
+					}
+				],	
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "4",
+				"rangeLower" : "80",
+				"rangeUpper" : "320"
+			}		
+		]
+	},
+	"amountOfCreatureInCombat" : "1"
 }

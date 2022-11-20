@@ -2,8 +2,7 @@ package Events;
 
 import java.util.Stack;
 
-import Actions.Action;
-import Actions.AttackAction;
+import Actions.*;
 import Combatants.Combatant;
 import Exceptions.EventTypeException;
 
@@ -26,8 +25,18 @@ public class EventFactory {
 	
 	public Event createEvent(Action action, Stack<Combatant> targetStack) throws EventTypeException {		
 		if (action instanceof AttackAction ) {
-			return new AttackEvent(action, targetStack);
-		} else {
+			return new AttackEvent((AttackAction)action, targetStack);
+		} else if (action instanceof RegenerationAction ) {
+			return new RegenerationEvent((RegenerationAction)action, targetStack);
+		} else if (action instanceof MultiAction) {
+			return new MultiAttackEvent((MultiAction)action, targetStack);
+		} else if (action instanceof AoeAttackAction) {
+			return new AoeAttackEvent((AoeAttackAction)action, targetStack);
+		} else if (action instanceof AoeRechargeAction) {
+			return new AoeRechargeEvent((AoeRechargeAction)action, targetStack);
+		}
+		
+		else {
 			throw new EventTypeException("Action type not recognised");
 		}
 	}

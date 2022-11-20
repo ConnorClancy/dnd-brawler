@@ -1,0 +1,69 @@
+{
+	"name": "Troll",
+	"healthPoints": "84",
+	"armourClass": "15",
+	"speed": "30",
+	"team": "red",
+	"statistics": {
+		"strength": "4",
+		"dexterity": "1",
+		"constitusion": "5",
+		"intelligence": "-2",
+		"wisdom": "-1",
+		"charisma": "-2"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "multiattack",
+				"name" : "multiattack",
+				"sequence" : {
+					"Bite" : "1",
+					"Claw" : "2"
+				}
+			},
+			{
+				"type": "attack",
+				"name" : "Bite",
+				"toHitBonus": "7",
+				"rangeLower": "5",
+				"rangeUpper": "5",
+				"targetCount": "1",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "1",
+						"damageBonus" : "4",
+						"damageType" : "piercing"
+					}
+				],	
+				"repeats": "1"
+			},
+			{
+				"type": "attack",
+				"name" : "Claw",
+				"toHitBonus": "7",
+				"rangeLower": "5",
+				"rangeUpper": "5",
+				"targetCount": "1",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "2",
+						"damageBonus" : "4",
+						"damageType" : "slashing"
+					}
+				],	
+				"repeats": "1"
+			}
+		],
+		"passives": [
+			{
+				"type" : "Regeneration",
+				"name" : "Regeneration",
+				"flatAmount" : "10"
+			}
+		]
+	},
+	"amountOfCreatureInCombat": "1"
+}
