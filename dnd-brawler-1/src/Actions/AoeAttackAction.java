@@ -8,6 +8,7 @@ public class AoeAttackAction extends Action {
 	protected boolean halfOnSuccess;
 	protected int diceSides;
 	protected int diceCount;
+	protected String damageType;
 	
 	public AoeAttackAction(
 			String name, 
@@ -16,7 +17,8 @@ public class AoeAttackAction extends Action {
 			String saveType, 
 			boolean halfOnSuccess, 
 			int diceSides,
-			int diceCount
+			int diceCount,
+			String damageType
 		) {
 		super(name);
 		this.range = range;
@@ -25,6 +27,11 @@ public class AoeAttackAction extends Action {
 		this.halfOnSuccess = halfOnSuccess;
 		this.diceSides = diceSides;
 		this.diceCount = diceCount;
+		this.damageType = damageType;
+	}
+
+	public String getDamageType() {
+		return damageType;
 	}
 
 	public int getRange() {

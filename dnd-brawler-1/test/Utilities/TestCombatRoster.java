@@ -15,6 +15,9 @@ class TestCombatRoster {
 	
 	protected static CombatRoster roster;
 	protected static Combatant skeleton;
+	
+	private static final String[] RESTISTANCES = {};
+	private static final String[] VULNERABILITIES = {};
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -31,7 +34,7 @@ class TestCombatRoster {
 			);
 		
 		try {
-			skeleton = new Combatant("Skeleton", 13, 13, 30, stats);
+			skeleton = new Combatant("Skeleton", 13, 13, 30, stats, RESTISTANCES, VULNERABILITIES);
 		} catch(CreationException e){
 			e.getMessage();
 		}
@@ -60,7 +63,7 @@ class TestCombatRoster {
 			);
 		
 		try {
-			Combatant skeletonTwo = new Combatant("SkeletonTwo", 13, 13, 30, stats);
+			Combatant skeletonTwo = new Combatant("SkeletonTwo", 13, 13, 30, stats, RESTISTANCES, VULNERABILITIES);
 			
 			roster.add(skeletonTwo);
 		

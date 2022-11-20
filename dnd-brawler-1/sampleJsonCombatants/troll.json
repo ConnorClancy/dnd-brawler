@@ -51,7 +51,7 @@
 						"sides" : "6",
 						"count" : "2",
 						"damageBonus" : "4",
-						"damageType" : "piercing"
+						"damageType" : "slashing"
 					}
 				],	
 				"repeats": "1"

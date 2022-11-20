@@ -4,6 +4,7 @@
 	"armourClass" : "17",
 	"speed" : "50",
 	"team" : "blue",
+	"restistances" : ["poison", "psychic"],
 	"statistics" : {
 		"strength" : "1",
 		"dexterity" : "2",

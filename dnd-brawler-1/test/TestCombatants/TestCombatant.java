@@ -25,6 +25,9 @@ import Exceptions.CreationException;
 class TestCombatant {
 	
 	protected Combatant combatant;
+	
+	private static final String[] RESTISTANCES = {};
+	private static final String[] VULNERABILITIES = {};
 
 	/**
 	 * @throws java.lang.Exception
@@ -48,7 +51,7 @@ class TestCombatant {
 			);
 		
 		try {
-			combatant = new Combatant("Skeleton", 13, 13, 30, validStats);
+			combatant = new Combatant("Skeleton", 13, 13, 30, validStats, RESTISTANCES, VULNERABILITIES);
 		} catch (CreationException e) {
 			e.printStackTrace();
 		}
@@ -76,11 +79,11 @@ class TestCombatant {
 			);
 		
 		assertDoesNotThrow(() -> {
-			combatant = new Combatant("Skeleton", 13, 13, 30, validStats);
+			combatant = new Combatant("Skeleton", 13, 13, 30, validStats, RESTISTANCES, VULNERABILITIES);
 		});
 
 		CreationException exception = assertThrows(CreationException.class, () -> {
-			combatant = new Combatant("Skeleton", 13, 13, 30, invalidStats);
+			combatant = new Combatant("Skeleton", 13, 13, 30, invalidStats, RESTISTANCES, VULNERABILITIES);
 		});
 		
 		assertEquals("Stats given are invalid", exception.getMessage());

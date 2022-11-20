@@ -4,6 +4,8 @@
 	"armourClass" : "13",
 	"speed" : "30",
 	"team" : "red",
+	"restistances" : ["poison", "sass"],
+	"vulnerabilities" : ["bludgeoning"],
 	"statistics" : {
 		"strength" : "0",
 		"dexterity" : "2",

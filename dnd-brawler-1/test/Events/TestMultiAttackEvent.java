@@ -33,6 +33,9 @@ class TestMultiAttackEvent {
 
 	protected Combatant combatant;
 	
+	private static final String[] RESTISTANCES = {};
+	private static final String[] VULNERABILITIES = {};
+	
 	protected MultiAttackEvent testEvent;
 
 	private Stack<Combatant> targetStack = new Stack<Combatant>();
@@ -52,7 +55,9 @@ class TestMultiAttackEvent {
 						0, 
 						0, 
 						0
-						)
+						),
+				RESTISTANCES, 
+				VULNERABILITIES
 				);
 				
 		this.targetStack.push(combatant);
@@ -103,7 +108,9 @@ class TestMultiAttackEvent {
 							0, 
 							0, 
 							0
-							)
+							),
+					RESTISTANCES, 
+					VULNERABILITIES
 					);
 			
 			Combatant combatant_2 = new Combatant(
@@ -118,7 +125,9 @@ class TestMultiAttackEvent {
 							0, 
 							0, 
 							0
-							)
+							),
+					RESTISTANCES, 
+					VULNERABILITIES
 					);
 			
 			Stack<Combatant> testTargetStack = new Stack<Combatant>();

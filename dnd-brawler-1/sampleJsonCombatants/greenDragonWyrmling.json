@@ -4,6 +4,7 @@
 	"armourClass" : "17",
 	"speed" : "30",
 	"team" : "blue",
+	"restistances" : ["poison"],
 	"statistics" : {
 		"strength" : "2",
 		"dexterity" : "1",
@@ -45,7 +46,8 @@
 				"saveType" : "constitusion",
 				"halfOnSuccess" : "true",
 				"diceSides" : "6",
-				"diceCount" : "6"
+				"diceCount" : "6",
+				"damageType" : "poison"
 			}	
 		],
 		"passives": [

@@ -22,8 +22,11 @@ public class Combatant {
 	
 	protected ArrayList<Action> actions;
 	protected ArrayList<Action> passiveAbilities;
+	
+	final protected String[] damageResitances;
+	final protected String[] damageVulnerabilities;
 
-	public Combatant(String name, int healthPoints, int ac, int speed, Statistics statistics)  throws CreationException {
+	public Combatant(String name, int healthPoints, int ac, int speed, Statistics statistics, String[] restistances, String[] vulnerabilities)  throws CreationException {
 		if(statistics.isValid())
 		{
 			this.name = name;
@@ -38,6 +41,8 @@ public class Combatant {
 		} else {
 			throw new CreationException("Stats given are invalid");
 		}
+		this.damageResitances = restistances;
+		this.damageVulnerabilities = vulnerabilities;
 	}
 
 	public int getHealthPoints() {
@@ -45,6 +50,28 @@ public class Combatant {
 	}
 	
 	public void reduceHealthPoints(int damageAmount) {
+		this.healthPoints -= damageAmount;
+	}
+	
+	public void reduceHealthPoints(int damageAmount, String incomingDamageType) {
+		
+		for (String resistedType : damageResitances) {
+			if (incomingDamageType.equals(resistedType)) {
+				damageAmount = (int) Math.floor(damageAmount/2.0);
+				System.out.println("resisted damage");
+				break;
+			}
+		}
+		
+		for (String vulnerableType : damageVulnerabilities) {
+			if (incomingDamageType.equals(vulnerableType)) {
+				damageAmount = damageAmount * 2;
+				System.out.println("vulnerable!");
+				break;
+			}
+		}
+			
+		
 		this.healthPoints -= damageAmount;
 	}
 	

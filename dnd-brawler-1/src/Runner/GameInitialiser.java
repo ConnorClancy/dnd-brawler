@@ -78,6 +78,18 @@ public class GameInitialiser {
 	    			JSONObject combatantJson = new JSONObject(str);
 
     				JSONObject stats = combatantJson.getJSONObject("statistics");
+
+    				String[] restiancesArr = {};
+    				if (combatantJson.has("restistances")) {
+    					JSONArray resistancesInput = combatantJson.getJSONArray("restistances");
+    					restiancesArr = resistancesInput.toList().toArray(restiancesArr);
+    				}
+    				
+    				String[] vulnerabilitiesArr = {};
+    				if (combatantJson.has("vulnerabilities")) {
+    					JSONArray vulnInput = combatantJson.getJSONArray("vulnerabilities");
+    					vulnerabilitiesArr = vulnInput.toList().toArray(vulnerabilitiesArr);
+    				}
     				
     				
 	    			int m = combatantJson.getInt("amountOfCreatureInCombat");
@@ -96,7 +108,9 @@ public class GameInitialiser {
 	    								stats.getInt("intelligence"),
 	    								stats.getInt("wisdom"),
 	    								stats.getInt("charisma")
-	    								)
+	    								),
+	    						restiancesArr,
+	    						vulnerabilitiesArr
 	    						);
 	    				
 	    				A.setTeam(combatantJson.getString("team"));
@@ -168,7 +182,8 @@ public class GameInitialiser {
 	    								jo.getString("saveType"), 
 	    								jo.getBoolean("halfOnSuccess"), 
 	    								jo.getInt("diceSides"),
-										jo.getInt("diceCount")
+										jo.getInt("diceCount"),
+										jo.getString("damageType")
 									)
 								);
 	    						A.setAoeAttackAvailable(true);

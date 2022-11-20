@@ -36,12 +36,12 @@ public class AoeAttackEvent implements Event {
 			if (save < action.getDc()) {
 				System.out.println(action.getName() + " hits " + currentTarget + "(rolled " + save
 						+ ") with full damage: " + damageRoll);
-				currentTarget.reduceHealthPoints(damageRoll);
+				currentTarget.reduceHealthPoints(damageRoll, action.getDamageType());
 			} else {
 				int halfDamage = Math.round(damageRoll) / 2;
 				System.out.println(action.getName() + " hits " + currentTarget + "(rolled " + save
 						+ ") with half damage: " + halfDamage);
-				currentTarget.reduceHealthPoints(halfDamage);
+				currentTarget.reduceHealthPoints(halfDamage, action.getDamageType());
 			}
 
 			if (currentTarget.getHealthPoints() <= 0) {

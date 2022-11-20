@@ -53,7 +53,7 @@ public class AttackEvent implements Event {
 					System.out.println("Hits " + currentTarget.toString() + " for " +
 							damageRoll + " points of " + damageDie.getDamageType() + " damage");
 
-					currentTarget.reduceHealthPoints(damageRoll);
+					currentTarget.reduceHealthPoints(damageRoll, damageDie.getDamageType());
 				}
 				
 				if (currentTarget.getHealthPoints() <= 0) {
