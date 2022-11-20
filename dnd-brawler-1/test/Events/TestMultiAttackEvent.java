@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Actions.AttackAction;
+import Actions.DamageDie;
 import Actions.MultiAction;
 import Combatants.Combatant;
 import Combatants.Statistics;
@@ -18,11 +19,17 @@ class TestMultiAttackEvent {
 	private static final MultiAction MULTI_ACTION = 
 			new MultiAction("multiattack");
 	
+	private static final DamageDie[] dice1 = 
+			{new DamageDie(1, 5, 20, "type")};
+
+	private static final DamageDie[] dice2 = 
+		{new DamageDie(1, 1, 0, "type")};
+	
 	private static final AttackAction ACTION_1 = 
-			new AttackAction("attack-1", 1, 5, 1, 1, 10, 20);
+			new AttackAction("attack-1", 1, 1, 10, dice1);
 	
 	private static final AttackAction ACTION_2 = 
-			new AttackAction("attack-2", 1, 1, 1, 1, 10, 0);
+			new AttackAction("attack-2", 1, 1, 10, dice2);
 
 	protected Combatant combatant;
 	
