@@ -17,12 +17,23 @@
 			{
 				"type" : "attack",
 				"name" : "Bite",
-				"diceSides" : "10",
-				"diceCount" : "1",
+				"dice" : [
+					{
+						"sides" : "10",
+						"count" : "1",
+						"damageBonus" : "2",
+						"damageType" : "piercing"
+					},
+					{
+						"sides" : "6",
+						"count" : "1",
+						"damageBonus" : "0",
+						"damageType" : "poison"
+					}
+				],
 				"targetCount" : "1",
 				"repeats" : "1",
 				"toHitBonus" : "4",
-				"damageBonus" : "2",
 				"rangeLower" : "5",
 				"rangeUpper" : "5"
 			},
