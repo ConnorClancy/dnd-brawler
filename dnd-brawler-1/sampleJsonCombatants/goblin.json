@@ -1,0 +1,54 @@
+{
+	"name" : "Goblin",
+	"armourClass" : "15",
+	"healthPoints" : "7",
+	"speed" : "30",
+	"team" : "blue",
+	"statistics" : {
+		"strength" : "-1",
+		"dexterity" : "2",
+		"constitusion" : "0",
+		"intelligence" : "0",
+		"wisdom" : "-1",
+		"charisma" : "-1"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type": "attack",
+				"name" : "Scimitar",
+				"dice" : [
+					{
+						"count" : "1",
+						"sides" : "6",
+						"damageBonus" : "2",
+						"damageType" : "slashing"
+					}
+				],				
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "4",				
+				"rangeLower" : "5",
+				"rangeUpper" : "5"
+			},
+			{
+			    "type": "attack",
+				"name" : "shortbow",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "1",
+						"damageBonus" : "2",
+						"damageType" : "piercing"
+					}
+				],	
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "4",
+				"rangeLower" : "80",
+				"rangeUpper" : "320"
+			}		
+		]
+	},
+	"amountOfCreatureInCombat" : "0"
+}

@@ -197,4 +197,18 @@ public class Combatant {
 		
 	}
 	
+	public void addAbility(Action action, String actionSetType) {
+		switch(actionSetType) {
+		
+		case "actions" :
+			actions.add(action);
+			break;
+			
+		case "passives" :
+			passiveAbilities.add(action);
+			break;
+			
+		}	
+	}
+	
 }

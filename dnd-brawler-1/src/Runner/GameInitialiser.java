@@ -10,7 +10,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,10 +53,10 @@ public class GameInitialiser {
 	
 	//Combatants class = stats and numbers
 	//CombatantRepitour class = actions logic etc?
-	
+	Logger log;
 	
 	public GameInitialiser() {
-		
+		log = Logger.getLogger("Initialiser");
 	}
 	
 	/*
@@ -70,7 +73,7 @@ public class GameInitialiser {
 		try {
 			
 			Files.walk(dirName).filter(Files::isRegularFile).forEach(path -> {
-	            System.out.println(path);
+	            log.info(path.toString());
 	           
 	            try {
 	    			String str = Files.readString(path);
@@ -117,143 +120,136 @@ public class GameInitialiser {
 	    				
 	    				//get all abilities and parse into respective sets
 	    				JSONObject abilities = combatantJson.getJSONObject("abilities");
-	    					    	
-	    				//get turn actions first
-	    				JSONArray actions = abilities.getJSONArray("actions");
+	    					    	    				
+	    				Iterator<String> abilityIterator = abilities.keys();
 	    				
-	
-	    				for (int j = 0; j < actions.length(); j++) {
-	    					JSONObject jo = actions.getJSONObject(j);
-	
-	    					switch (jo.getString("type")) {
-	    					case ATTACK_TYPE:
+	    				while(abilityIterator.hasNext()) {
+	    					
+	    					String actionSetName = abilityIterator.next();
+	    					
+	    					JSONArray actionSet = abilities.getJSONArray(actionSetName);
+	    					
+	    					log.info("current action set: " + actionSetName);
+	    					
+	    					
+	    					for (int actionIndex = 0; actionIndex < actionSet.length(); actionIndex++) {
 	    						
-	    						JSONArray diceData = jo.getJSONArray("dice");
+	    						JSONObject currAction = actionSet.getJSONObject(actionIndex);
 	    						
-	    						ArrayList<DamageDie> diceArrL = new ArrayList<DamageDie>();
+	    						log.info("current action: " + currAction.getString("name"));
 	    						
-	    						for (int diceCount = 0; diceCount < diceData.length(); diceCount++) {
-	    							JSONObject dieData = diceData.getJSONObject(diceCount);
-	    							diceArrL.add(new DamageDie(
-	    									dieData.getInt("sides"), 
-	    									dieData.getInt("count"), 
-	    									dieData.getInt("damageBonus"), 
-	    									dieData.getString("damageType")
-	    									)
-	    								);
-	    						}
-	    						
-	    						DamageDie diceArr[] = new DamageDie[diceArrL.size()];
-	    						
-	    						A.addAction(
-	    								new AttackAction(
-	    										jo.getString("name"), 	    										
-	    										jo.getInt("targetCount"),
-	    										jo.getInt("repeats"),
-	    										jo.getInt("toHitBonus"),
-	    										diceArrL.toArray(diceArr)
-	    										)
-	    								);
-	    						break;
-	    					case MULTI_ATTACK_TYPE :
-	    						/*
-	    						 * Record names and repeat counts of each attack in multiAttack. 
-	    						 * After action parse loop provide MultiAction object with instantiated Actions
-	    						 * 
-	    						 */
-	    						MultiAction multiAttack = new MultiAction(jo.getString("name"));
-	    						
-	    						JSONObject jsonAttackSequence = jo.getJSONObject("sequence");
-	    							    						
-	    						for (String attackName : jsonAttackSequence.keySet()) {
-									multiAttack.loadNameMap(attackName, jsonAttackSequence.getInt(attackName));
-								}
+	    						switch (currAction.getString("type")) {
+	    						case ATTACK_TYPE:
+		    						
+		    						JSONArray diceData = currAction.getJSONArray("dice");
+		    						
+		    						ArrayList<DamageDie> diceArrL = new ArrayList<DamageDie>();
+		    						
+		    						for (int diceCount = 0; diceCount < diceData.length(); diceCount++) {
+		    							JSONObject dieData = diceData.getJSONObject(diceCount);
+		    							diceArrL.add(new DamageDie(
+		    									dieData.getInt("sides"), 
+		    									dieData.getInt("count"), 
+		    									dieData.getInt("damageBonus"), 
+		    									dieData.getString("damageType")
+		    									)
+		    								);
+		    						}
+		    						
+		    						DamageDie diceArr[] = new DamageDie[diceArrL.size()];
+		    						
+		    						A.addAbility(
+		    								new AttackAction(
+		    										currAction.getString("name"), 	    										
+		    										currAction.getInt("targetCount"),
+		    										currAction.getInt("repeats"),
+		    										currAction.getInt("toHitBonus"),
+		    										diceArrL.toArray(diceArr)
+		    										),
+		    								actionSetName
+		    								);
+		    						break;
+		    					case MULTI_ATTACK_TYPE :
+		    						/*
+		    						 * Record names and repeat counts of each attack in multiAttack. 
+		    						 * After action parse loop provide MultiAction object with instantiated Actions
+		    						 * 
+		    						 */
+		    						MultiAction multiAttack = new MultiAction(currAction.getString("name"));
+		    						
+		    						JSONObject jsonAttackSequence = currAction.getJSONObject("sequence");
+		    							    						
+		    						for (String attackName : jsonAttackSequence.keySet()) {
+										multiAttack.loadNameMap(attackName, jsonAttackSequence.getInt(attackName));
+									}
 
-	    						A.addAction(multiAttack);
-	    						A.setMultiAttackAvailable(true);
-	    						
-	    						break;
-	    					case AOE_TYPE:
-	    						A.addAction(
-	    							new AoeAttackAction(
-	    								jo.getString("name"), 
-	    								jo.getInt("range"), 
-	    								jo.getInt("dc"), 
-	    								jo.getString("saveType"), 
-	    								jo.getBoolean("halfOnSuccess"), 
-	    								jo.getInt("diceSides"),
-										jo.getInt("diceCount"),
-										jo.getString("damageType")
-									)
-								);
-	    						A.setAoeAttackAvailable(true);
-	    						break;	    					
-	    					default:
-	    						throw new CreationException("Action not recognised");
-	    					}
-	    					
-	    				}
-	    				
-	    				//if combatant has multiattack
-	    				//map.load(comb.getAction(multiAttackName1-X), get int);
-	    				
-	    				if (A.isMultiAttackAvailable()) {
-	    					//get multiAction mapping
-	    					MultiAction multiAttack = (MultiAction)A.getAction("multiattack");
-	    					
-	    					Map<String, Integer> attackSequence = multiAttack.getMultiActionNameMapping();
-	    					
-	    					//iterates over mapping and adds actions as appropriate
-	    					for (String attackName : attackSequence.keySet()) {
-	    						multiAttack.loadActionMap(
-	    								A.getAction(attackName), 
-	    								attackSequence.get(attackName)
-	    								);
-	    					}
-	    				}
-	    				
-	    				if(abilities.has("passives")) {
-	    					
-	    					System.out.println("Passive abilities found");
-
-	    					JSONArray passiveAbilities = abilities.getJSONArray("passives");
-		    				
-		    				
-		    				for (int j = 0; j < passiveAbilities.length(); j++) {
-		    					JSONObject jo = passiveAbilities.getJSONObject(j);
-		    					
-		    					switch (jo.getString("type")) {
+		    						A.addAbility(multiAttack, actionSetName);
+		    						A.setMultiAttackAvailable(true);
+		    						
+		    						break;
+		    					case AOE_TYPE:
+		    						A.addAbility(
+		    							new AoeAttackAction(
+	    									currAction.getString("name"), 
+	    									currAction.getInt("range"), 
+	    									currAction.getInt("dc"), 
+	    									currAction.getString("saveType"), 
+	    									currAction.getBoolean("halfOnSuccess"), 
+	    									currAction.getInt("diceSides"),
+	    									currAction.getInt("diceCount"),
+	    									currAction.getString("damageType")
+										),
+		    							actionSetName
+									);
+		    						A.setAoeAttackAvailable(true);
+		    						break;	    	
 		    					case REGENERATION_TYPE:
-		    						A.addPassiveAbility(
-		    								new RegenerationAction(jo.getString("name"), jo.getInt("flatAmount")));
+		    						A.addAbility(
+		    								new RegenerationAction(
+		    										currAction.getString("name"), 
+		    										currAction.getInt("flatAmount")
+		    									),
+		    								actionSetName
+		    								);
 		    						break;
 		    					case AOE_RECHARGE_TYPE:
-		    						A.addPassiveAbility(
+		    						A.addAbility(
 		    								new AoeRechargeAction(
-		    										jo.getString("name"), 
-		    										jo.getInt("rechargeDieSides"),
-		    										jo.getInt("successBoundLower"),
-		    										jo.getInt("successBoundUpper")
-		    									)
+		    										currAction.getString("name"), 
+		    										currAction.getInt("rechargeDieSides"),
+		    										currAction.getInt("successBoundLower"),
+		    										currAction.getInt("successBoundUpper")
+		    									),
+		    								actionSetName
 		    								);
 		    						break;
 		    					default:
-		    						throw new CreationException("Passive Ability not recognised");
-		    					}
+		    						throw new CreationException("Action not recognised");	
+		    					}	
+	    					}	
+	    					
+	    					if (A.isMultiAttackAvailable()) {
+		    					//get multiAction mapping
+		    					MultiAction multiAttack = (MultiAction)A.getAction("multiattack");
 		    					
+		    					Map<String, Integer> attackSequence = multiAttack.getMultiActionNameMapping();
+		    					
+		    					//iterates over mapping and adds actions as appropriate
+		    					for (String attackName : attackSequence.keySet()) {
+		    						multiAttack.loadActionMap(
+		    								A.getAction(attackName), 
+		    								attackSequence.get(attackName)
+		    								);
+		    					}
 		    				}
-	    				} else {
-	    					System.out.println("No passive abilities found");
 	    				}
 	    				
-
-						System.out.println(A.toString());
 						A.updateName(combatantJson.getString("name") + "-" + i);
 						field.add(A);
 					}
 		            
 				} catch (IOException | JSONException | CreationException | ActionNotExistException e) {
-					System.out.println(e.getMessage());
+					log.log(Level.WARNING, "Combatant adding error - " + e);
 				}
 	        });
 			
@@ -274,7 +270,7 @@ public class GameInitialiser {
 			}
 
 		} catch (IOException exeption) {
-			System.out.println(exeption.getMessage());
+			log.log(Level.SEVERE, "JSON input not successful - " + exeption);
 		}
 
 		if (State.getState().getRoster().isEmpty()) {
