@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,10 +53,10 @@ public class GameInitialiser {
 	
 	//Combatants class = stats and numbers
 	//CombatantRepitour class = actions logic etc?
-	
+	Logger log;
 	
 	public GameInitialiser() {
-		
+		log = Logger.getLogger("Initialiser");
 	}
 	
 	/*
@@ -71,7 +73,7 @@ public class GameInitialiser {
 		try {
 			
 			Files.walk(dirName).filter(Files::isRegularFile).forEach(path -> {
-	            System.out.println(path);
+	            log.info(path.toString());
 	           
 	            try {
 	    			String str = Files.readString(path);
@@ -127,14 +129,14 @@ public class GameInitialiser {
 	    					
 	    					JSONArray actionSet = abilities.getJSONArray(actionSetName);
 	    					
-	    					System.out.println("current action set: " + actionSetName);
+	    					log.info("current action set: " + actionSetName);
 	    					
 	    					
 	    					for (int actionIndex = 0; actionIndex < actionSet.length(); actionIndex++) {
 	    						
 	    						JSONObject currAction = actionSet.getJSONObject(actionIndex);
 	    						
-	    						System.out.println("current action: " + currAction.getString("name"));
+	    						log.info("current action: " + currAction.getString("name"));
 	    						
 	    						switch (currAction.getString("type")) {
 	    						case ATTACK_TYPE:
@@ -242,14 +244,12 @@ public class GameInitialiser {
 		    				}
 	    				}
 	    				
-
-						System.out.println(A.toString());
 						A.updateName(combatantJson.getString("name") + "-" + i);
 						field.add(A);
 					}
 		            
 				} catch (IOException | JSONException | CreationException | ActionNotExistException e) {
-					System.out.println(e.getMessage());
+					log.log(Level.WARNING, "Combatant adding error - " + e);
 				}
 	        });
 			
@@ -270,7 +270,7 @@ public class GameInitialiser {
 			}
 
 		} catch (IOException exeption) {
-			System.out.println(exeption.getMessage());
+			log.log(Level.SEVERE, "JSON input not successful - " + exeption);
 		}
 
 		if (State.getState().getRoster().isEmpty()) {

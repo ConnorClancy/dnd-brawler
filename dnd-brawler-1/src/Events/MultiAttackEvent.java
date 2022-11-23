@@ -2,21 +2,27 @@ package Events;
 
 import java.util.Map;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import Actions.Action;
 import Actions.MultiAction;
 import Combatants.Combatant;
 import Exceptions.EventTypeException;
+import Runner.GameRunner;
 
 public class MultiAttackEvent implements Event {
 
 	protected MultiAction action;
 	protected Stack<Combatant> sourceTargetStack;
 	protected Stack<Combatant> copyTargetStack;
+	
+	Logger log;
 
 	public MultiAttackEvent(MultiAction action, Stack<Combatant> targetStack) {
 		this.action = action;
 		this.sourceTargetStack = targetStack;
+		log = Logger.getLogger(MultiAttackEvent.class.getName());
 	}
 
 	@Override
@@ -43,7 +49,7 @@ public class MultiAttackEvent implements Event {
 						}
 						
 					} catch (EventTypeException e) {
-						e.printStackTrace();
+						log.log(Level.WARNING, "Event could not be created - " + e);
 					}
 				}
 			}

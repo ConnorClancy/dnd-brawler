@@ -2,6 +2,8 @@ package Utilities;
 
 import java.util.Random;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import Actions.Action;
 import Actions.AoeAttackAction;
@@ -12,12 +14,15 @@ import Actions.RegenerationAction;
 import Combatants.Combatant;
 import Events.Event;
 import Events.EventFactory;
+import Events.MultiAttackEvent;
 import Exceptions.ActionNotExistException;
 import Exceptions.EventTypeException;
 import Runner.State;
 
 public class CombatAI {
 	
+	
+	protected static final Logger log = Logger.getLogger(CombatAI.class.getName());;
 	
 	public static Event determineAction(Combatant currentCombatant, CombatRoster roster) {
 		
@@ -27,7 +32,7 @@ public class CombatAI {
 		try {
 			if (currentCombatant.isMultiAttackAvailable()) {
 				chosenAction = currentCombatant.getActionByType(MultiAction.class);
-				System.out.println("multiattack found");
+				log.info("Using multiattack action");
 				
 			} else if (currentCombatant.isAoeAttackAvailable()) {
 				
@@ -35,13 +40,13 @@ public class CombatAI {
 				
 				currentCombatant.setAoeAttackAvailable(false);
 				
-				System.out.println("Aoe found and available");
+				log.info("Using AOE action");
 				
 			} else {
 				chosenAction = currentCombatant.getActionByType(AttackAction.class);
 			}
 		} catch (ActionNotExistException e) {
-			e.printStackTrace();
+			log.log(Level.WARNING, "log: " + e);
 			chosenAction = currentCombatant.getActions().get(0);
 		}
 
@@ -62,8 +67,7 @@ public class CombatAI {
 		try {
 			return factory.createEvent(chosenAction, targets);
 		} catch (EventTypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Event could not be created - " + e);
 		}
 		
 		return null;
@@ -92,8 +96,7 @@ public class CombatAI {
 		try {
 			return factory.createEvent(chosenAction, targets);
 		} catch (EventTypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Event could not be created - " + e);
 		}
 		
 		return null;
@@ -122,7 +125,7 @@ public class CombatAI {
 			targetCount = (int) Math.floor(n);
 		}
 		
-		System.out.println("targets selected: " + targetCount);
+		log.info("targets selected: " + targetCount);
 		
 		int targetsAdded = 0;
 		for (Combatant c : State.getState().getRoster().getOpponents(currentCombatant)) {

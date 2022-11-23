@@ -1,15 +1,20 @@
 package Runner;
 
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import Combatants.Combatant;
 import Events.Event;
 import Utilities.CombatAI;
 import Utilities.CombatRoster;
 
+
 public class GameRunner {
+	
+	protected static Logger log = Logger.getLogger("GameRunner");
 
 	public static void main(String args[]) {
+		
 		
 		GameInitialiser gi = new GameInitialiser();
 		
@@ -27,7 +32,7 @@ public class GameRunner {
 			int roundCounter = 0;
 			//Round Loop
 			while (State.getState().opposingCombatantsRemain()) {
-				
+								
 				System.out.println("Round :" + ++roundCounter);
 				System.out.println("----------------------");
 				
@@ -58,7 +63,7 @@ public class GameRunner {
 						//reset iterator to avoid concurrent manipulation exception
 						turnItr = roster.listIterator();
 						while (turnItr.hasNext() && turnItr.next() != currCombatant) {
-							System.out.println("resetting iterator to " + currCombatant);
+							log.info("resetting iterator to " + currCombatant);
 						}
 					}
 					
@@ -74,8 +79,8 @@ public class GameRunner {
 		}
 		
 		else {
-			//TODO throw some custom exception
-			System.out.println("Fuckin Error with setField m8");
+			log.severe("Initialiser failed, game did not start");
+			System.out.println("Exiting Early: report error");
 		}
 		
 		System.out.println("----------------------");
