@@ -1,0 +1,88 @@
+{
+	"name" : "Balor",
+	"armourClass" : "19",
+	"healthPoints" : "262",
+	"speed" : "80",
+	"team" : "blue",
+	"restistances" : ["poison", "fire", "cold", "lightning", "bludgeoning", "piercing", "slashing"],
+	"statistics" : {
+		"strength" : "8",
+		"dexterity" : "2",
+		"constitusion" : "6",
+		"intelligence" : "5",
+		"wisdom" : "3",
+		"charisma" : "6"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "multiattack",
+				"name" : "multiattack",
+				"sequence" : {
+					"longsword" : "1",
+					"whip" : "1"
+				}
+			},
+			{
+			    "type": "attack",
+				"name" : "longsword",
+				"dice" : [
+					{
+						"sides" : "8",
+						"count" : "3",
+						"damageBonus" : "8",
+						"damageType" : "slashing"
+					},
+					{
+						"sides" : "8",
+						"count" : "3",
+						"damageBonus" : "0",
+						"damageType" : "lightning"
+					}
+				],	
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "14",
+				"rangeLower" : "10",
+				"rangeUpper" : "10"
+			},	
+			{
+			    "type": "attack",
+				"name" : "whip",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "2",
+						"damageBonus" : "8",
+						"damageType" : "slashing"
+					},
+					{
+						"sides" : "6",
+						"count" : "3",
+						"damageBonus" : "0",
+						"damageType" : "fire"
+					}
+				],	
+				"targetCount" : "1",
+				"repeats" : "1",
+				"toHitBonus" : "14",
+				"rangeLower" : "30",
+				"rangeUpper" : "30"
+			}			
+		],
+		"passives": [
+			{	
+				"type" : "aoeAttack",
+				"name" : "Fire Aura",
+				"range" : "5",
+				"dc" : "100",
+				"saveType" : "constitusion",
+				"halfOnSuccess" : "false",
+				"diceSides" : "6",
+				"diceCount" : "3",
+				"damageType" : "fire"	
+			}
+		]
+	},
+	"amountOfCreatureInCombat" : "1"
+}

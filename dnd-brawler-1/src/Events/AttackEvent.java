@@ -5,8 +5,8 @@ import java.util.Stack;
 import Actions.AttackAction;
 import Actions.DamageDie;
 import Combatants.Combatant;
-import Runner.State;
 import Utilities.DiceBox;
+import Runner.State;
 
 public class AttackEvent implements Event {
 	

@@ -14,6 +14,7 @@ import Events.Event;
 import Events.EventFactory;
 import Exceptions.ActionNotExistException;
 import Exceptions.EventTypeException;
+import Runner.State;
 
 public class CombatAI {
 	
@@ -46,38 +47,9 @@ public class CombatAI {
 
 		Stack<Combatant> targets = new Stack<Combatant>();
 
-		 //TODO choosing logic
 		if (chosenAction instanceof AoeAttackAction) {
 			
-			//represents the number of quarters of opponents targeted by AOE, i.e 1 implies 25%, 2 implies 50%
-			int[] aoeHitDistribution = new int[] {1, 1, 1, 2, 2, 2, 2, 3, 3, 4};
-			
-			Random selector = new Random();
-			int selectedIndex = selector.nextInt(0, aoeHitDistribution.length);
-			int selectedDistribution = aoeHitDistribution[selectedIndex];
-			
-			int numOpponents = roster.getOpponentCount(currentCombatant);
-			int targetCount;
-			
-			if (numOpponents <= 4) {				
-				targetCount = Math.min(numOpponents, selectedDistribution);
-			} else {
-				//divide opponent count by 4, multiply by distribution, round down if needed
-				double n = (numOpponents/4.0) * selectedDistribution;
-				targetCount = (int) Math.floor(n);
-			}
-			
-			System.out.println("targets selected: " + targetCount);
-			
-			int targetsAdded = 0;
-			for (Combatant c : roster.getOpponents(currentCombatant)) {
-				targets.push(c);
-				targetsAdded++;
-				
-				if (targetsAdded >= targetCount) {
-					break;
-				}
-			}
+			targets = calculateAoeTargetStack(currentCombatant);
 			
 		} else {
 			for (Combatant c : roster.getOpponents(currentCombatant)) {
@@ -101,7 +73,7 @@ public class CombatAI {
 		return currentCombatant.getPassiveAbilityCount() != 0;
 	}
 	
-public static Event determinePassiveAction(Combatant currentCombatant) {
+	public static Event determinePassiveAction(Combatant currentCombatant) {
 		
 		Action chosenAction = currentCombatant.getPassiveAbilities().get(0);
 		
@@ -109,6 +81,10 @@ public static Event determinePassiveAction(Combatant currentCombatant) {
 		
 		if (chosenAction instanceof RegenerationAction || chosenAction instanceof AoeRechargeAction) {
 			targets.add(currentCombatant);
+		}
+		
+		if (chosenAction instanceof AoeAttackAction) {
+			targets = calculateAoeTargetStack(currentCombatant);
 		}
 		
 		EventFactory factory = EventFactory.getEventFactory();
@@ -121,6 +97,44 @@ public static Event determinePassiveAction(Combatant currentCombatant) {
 		}
 		
 		return null;
+	}
+	
+	
+	
+	protected static Stack<Combatant> calculateAoeTargetStack(Combatant currentCombatant) {
+		
+		Stack<Combatant> stack = new Stack<Combatant>();
+		//represents the number of quarters of opponents targeted by AOE, i.e 1 implies 25%, 2 implies 50%
+		int[] aoeHitDistribution = new int[] {1, 1, 1, 2, 2, 2, 2, 3, 3, 4};
+		
+		Random selector = new Random();
+		int selectedIndex = selector.nextInt(0, aoeHitDistribution.length);
+		int selectedDistribution = aoeHitDistribution[selectedIndex];
+		
+		int numOpponents = State.getState().getRoster().getOpponentCount(currentCombatant);
+		int targetCount;
+		
+		if (numOpponents <= 4) {				
+			targetCount = Math.min(numOpponents, selectedDistribution);
+		} else {
+			//divide opponent count by 4, multiply by distribution, round down if needed
+			double n = (numOpponents/4.0) * selectedDistribution;
+			targetCount = (int) Math.floor(n);
+		}
+		
+		System.out.println("targets selected: " + targetCount);
+		
+		int targetsAdded = 0;
+		for (Combatant c : State.getState().getRoster().getOpponents(currentCombatant)) {
+			stack.push(c);
+			targetsAdded++;
+			
+			if (targetsAdded >= targetCount) {
+				break;
+			}
+		}
+		
+		return stack;
 	}
 
 }
