@@ -6,6 +6,7 @@ import static Utilities.ActionDirectory.ATTACK_TYPE;
 import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
 import static Utilities.ActionDirectory.REGENERATION_TYPE;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +32,7 @@ import Combatants.Statistics;
 import Exceptions.ActionNotExistException;
 import Exceptions.CreationException;
 import Utilities.DiceBox;
+import Utilities.FieldEntry;
 
 
 public class GameInitialiser {
@@ -64,19 +66,20 @@ public class GameInitialiser {
 	 * rolls initiative
 	 * adds to state
 	 */
-	public boolean setField() {
-		
-		Path dirName = Path.of("/Users/connorclancy/dev/dnd-brawler/dnd-brawler-1/sampleJsonCombatants");
-		
+	public boolean setField(FieldEntry[] fieldLayout) {
+				
 		ArrayList<Combatant> field = new ArrayList<Combatant>();
 		
-		try {
+		String root = "./sampleJsonCombatants/";
+		
+		for(FieldEntry entry : fieldLayout) {
 			
-			Files.walk(dirName).filter(Files::isRegularFile).forEach(path -> {
-	            log.info(path.toString());
-	           
-	            try {
-	    			String str = Files.readString(path);
+			String path = root + entry.getName().toLowerCase() + ".json";
+			
+			if( Files.exists(Path.of(path)) ) {
+				log.info("file exists :)");
+				try {
+					String str = Files.readString(Path.of(path));
 
 	    			JSONObject combatantJson = new JSONObject(str);
 
@@ -93,11 +96,9 @@ public class GameInitialiser {
     					JSONArray vulnInput = combatantJson.getJSONArray("vulnerabilities");
     					vulnerabilitiesArr = vulnInput.toList().toArray(vulnerabilitiesArr);
     				}
-    				
-    				
-	    			int m = combatantJson.getInt("amountOfCreatureInCombat");
+    					
 	    			
-					for (int i = 1; i <= m; i++) {
+					for (int i = 1; i <= entry.getNumberInCombat(); i++) {
     				
 	    				Combatant A = new Combatant(
 	    						combatantJson.getString("name"),
@@ -116,7 +117,7 @@ public class GameInitialiser {
 	    						vulnerabilitiesArr
 	    						);
 	    				
-	    				A.setTeam(combatantJson.getString("team"));
+	    				A.setTeam(entry.getAssignedTeam());
 	    				
 	    				//get all abilities and parse into respective sets
 	    				JSONObject abilities = combatantJson.getJSONObject("abilities");
@@ -248,29 +249,33 @@ public class GameInitialiser {
 						field.add(A);
 					}
 		            
-				} catch (IOException | JSONException | CreationException | ActionNotExistException e) {
+				} catch (IOException e) {
+					log.log(Level.SEVERE, "JSON input not successful - " + e);
+				} catch (JSONException | CreationException | ActionNotExistException e) {
 					log.log(Level.WARNING, "Combatant adding error - " + e);
+				} catch (Exception e) {
+					log.log(Level.SEVERE, "WHAT - " + e);
 				}
-	        });
-			
-			State state = State.getState();
-
-			int initiative = 0;
-
-			for (Combatant c : field) {
-				initiative = rollInitiative(c);
-				System.out.println(c.toString() + " - intiative:" + initiative);
-				c.setInitiative(initiative);
+			} else {
+				log.warning("file not exist: " + path);
 			}
+		}
 
-			field.sort(new CombatantSorter());
+	
+		State state = State.getState();
 
-			for (Combatant c : field) {
-				state.addCombatant(c);
-			}
+		int initiative = 0;
 
-		} catch (IOException exeption) {
-			log.log(Level.SEVERE, "JSON input not successful - " + exeption);
+		for (Combatant c : field) {
+			initiative = rollInitiative(c);
+			System.out.println(c.toString() + " - intiative:" + initiative);
+			c.setInitiative(initiative);
+		}
+
+		field.sort(new CombatantSorter());
+
+		for (Combatant c : field) {
+			state.addCombatant(c);
 		}
 
 		if (State.getState().getRoster().isEmpty()) {

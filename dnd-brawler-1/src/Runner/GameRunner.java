@@ -5,8 +5,11 @@ import java.util.logging.Logger;
 
 import Combatants.Combatant;
 import Events.Event;
+import Exceptions.ValidationException;
 import Utilities.CombatAI;
 import Utilities.CombatRoster;
+import Utilities.FieldEntry;
+import Utilities.LayoutCreator;
 
 
 public class GameRunner {
@@ -15,10 +18,20 @@ public class GameRunner {
 
 	public static void main(String args[]) {
 		
+		LayoutCreator lc = new LayoutCreator(args);
+		
+		FieldEntry[] fieldLayout;
+		
+		try {
+			fieldLayout = lc.generateFieldLayout();
+		} catch (ValidationException e) {
+			log.severe("Input not valid - brawl cancelled");
+			return;
+		}
 		
 		GameInitialiser gi = new GameInitialiser();
 		
-		if (gi.setField()) {
+		if (gi.setField(fieldLayout)) {
 			
 			CombatRoster roster = State.getState().getRoster();
 			
