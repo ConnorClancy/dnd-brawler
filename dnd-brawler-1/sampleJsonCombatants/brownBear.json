@@ -1,0 +1,60 @@
+{
+	"name": "Brown Bear",
+	"healthPoints": "34",
+	"armourClass": "11",
+	"speed": "40",
+	"statistics": {
+		"strength": "4",
+		"dexterity": "0",
+		"constitusion": "3",
+		"intelligence": "-4",
+		"wisdom": "1",
+		"charisma": "-2"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "multiattack",
+				"name" : "multiattack",
+				"sequence" : {
+					"Bite" : "1",
+					"Claw" : "1"
+				}
+			},
+			{
+				"type": "attack",
+				"name" : "Bite",
+				"toHitBonus": "5",
+				"rangeLower": "5",
+				"rangeUpper": "5",
+				"targetCount": "1",
+				"dice" : [
+					{
+						"sides" : "8",
+						"count" : "1",
+						"damageBonus" : "4",
+						"damageType" : "piercing"
+					}
+				],	
+				"repeats": "1"
+			},
+			{
+				"type": "attack",
+				"name" : "Claw",
+				"toHitBonus": "5",
+				"rangeLower": "5",
+				"rangeUpper": "5",
+				"targetCount": "1",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "2",
+						"damageBonus" : "4",
+						"damageType" : "slashing"
+					}
+				],	
+				"repeats": "1"
+			}
+		]
+	}
+}

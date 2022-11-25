@@ -1,0 +1,60 @@
+{
+	"name": "Giant Eagle",
+	"healthPoints": "26",
+	"armourClass": "13",
+	"speed": "80",
+	"statistics": {
+		"strength": "3",
+		"dexterity": "3",
+		"constitusion": "1",
+		"intelligence": "-1",
+		"wisdom": "2",
+		"charisma": "0"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "multiattack",
+				"name" : "multiattack",
+				"sequence" : {
+					"Beak" : "1",
+					"Talon" : "1"
+				}
+			},
+			{
+				"type": "attack",
+				"name" : "Beak",
+				"toHitBonus": "5",
+				"rangeLower": "5",
+				"rangeUpper": "5",
+				"targetCount": "1",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "1",
+						"damageBonus" : "3",
+						"damageType" : "piercing"
+					}
+				],	
+				"repeats": "1"
+			},
+			{
+				"type": "attack",
+				"name" : "Talon",
+				"toHitBonus": "5",
+				"rangeLower": "5",
+				"rangeUpper": "5",
+				"targetCount": "1",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "2",
+						"damageBonus" : "3",
+						"damageType" : "slashing"
+					}
+				],	
+				"repeats": "1"
+			}
+		]
+	}
+}
