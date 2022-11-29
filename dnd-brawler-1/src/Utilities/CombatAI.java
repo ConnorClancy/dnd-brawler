@@ -30,17 +30,20 @@ public class CombatAI {
 		Action chosenAction = null;
 		
 		try {
-			if (currentCombatant.isMultiAttackAvailable()) {
-				chosenAction = currentCombatant.getActionByType(MultiAction.class);
-				log.info("Using multiattack action");
 				
-			} else if (currentCombatant.isAoeAttackAvailable()) {
+			if (currentCombatant.isAoeAttackAvailable()) {
 				
 				chosenAction = currentCombatant.getActionByType(AoeAttackAction.class);
 				
 				currentCombatant.setAoeAttackAvailable(false);
 				
 				log.info("Using AOE action");
+				
+			} else if (currentCombatant.isMultiAttackAvailable()) {
+				
+				chosenAction = currentCombatant.getActionByType(MultiAction.class);
+				
+				log.info("Using multiattack action");
 				
 			} else {
 				chosenAction = currentCombatant.getActionByType(AttackAction.class);

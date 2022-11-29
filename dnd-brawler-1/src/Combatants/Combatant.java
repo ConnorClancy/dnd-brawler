@@ -126,7 +126,7 @@ public class Combatant {
 				return currentAction;
 			}
 		}	
-		throw new ActionNotExistException("Action not found - '" + nameOfActionNeeded + "' does not exist");
+		throw new ActionNotExistException(this.name + ": Action not found - '" + nameOfActionNeeded + "' does not exist");
 	}
 	
 	public <T> Action getActionByType(Class<T> type) throws ActionNotExistException {
@@ -135,7 +135,7 @@ public class Combatant {
 				return currentAction;
 			}
 		}	
-		throw new ActionNotExistException("Action not found - '" + type + "' does not exist");
+		throw new ActionNotExistException(this.name + ": Action not found - '" + type + "' does not exist");
 	}
 
 	public void addAction(Action action) {

@@ -1,0 +1,35 @@
+{
+	"name": "Crodile",
+	"healthPoints": "19",
+	"armourClass": "12",
+	"speed": "20",
+	"statistics": {
+		"strength": "2",
+		"dexterity": "0",
+		"constitusion": "1",
+		"intelligence": "-4",
+		"wisdom": "0",
+		"charisma": "-3"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type": "attack",
+				"name" : "Bite",
+				"toHitBonus": "4",
+				"rangeLower": "5",
+				"rangeUpper": "5",
+				"targetCount": "1",
+				"dice" : [
+					{
+						"sides" : "10",
+						"count" : "1",
+						"damageBonus" : "2",
+						"damageType" : "piercing"
+					}
+				],	
+				"repeats": "1"
+			}
+		]
+	}
+}

@@ -1,0 +1,87 @@
+{
+	"name" : "Behir",
+	"armourClass" : "17",
+	"healthPoints" : "168",
+	"speed" : "50",
+	"restistances" : ["lightning"],
+	"statistics" : {
+		"strength": "6",
+		"dexterity": "3",
+		"constitusion": "4",
+		"intelligence": "-2",
+		"wisdom": "2",
+		"charisma": "1"
+	},
+	"abilities" : {
+		"actions" : [
+			{
+				"type" : "multiattack",
+				"name" : "multiattack",
+				"sequence" : {
+					"Bite" : "1",
+					"Constrict" : "1"
+				}
+			},
+			{
+			    "type": "attack",
+				"name" : "Bite",
+				"toHitBonus" : "10",
+				"rangeLower" : "10",
+				"rangeUpper" : "10",
+				"dice" : [
+					{
+						"sides" : "6",
+						"count" : "3",
+						"damageBonus" : "6",
+						"damageType" : "piercing"
+					}
+				],	
+				"targetCount" : "1",
+				"repeats" : "1"
+			},	
+			{
+			    "type": "attack",
+				"name" : "Constrict",
+				"toHitBonus" : "10",
+				"rangeLower" : "10",
+				"rangeUpper" : "10",
+				"dice" : [
+					{
+						"sides" : "10",
+						"count" : "2",
+						"damageBonus" : "6",
+						"damageType" : "slashing"
+					},
+					{
+						"sides" : "10",
+						"count" : "2",
+						"damageBonus" : "6",
+						"damageType" : "bludgeoning"
+					}
+				],	
+				"targetCount" : "1",
+				"repeats" : "1"
+			},
+			{
+				"type" : "aoeAttack",
+				"name" : "Lightning Breath",
+				"range" : "20",
+				"dc" : "16",
+				"saveType" : "dexterity",
+				"halfOnSuccess" : "true",
+				"diceSides" : "10",
+				"diceCount" : "12",
+				"damageType" : "lightning"
+			}			
+		],
+		"passives": [
+			{
+				"type" : "aoeRecharge",
+				"name" : "AOE Recharge",
+				"rechargeDieSides" : "6",
+				"successBoundLower" : "5",
+				"successBoundUpper" : "6"
+			}
+		]
+	}
+}

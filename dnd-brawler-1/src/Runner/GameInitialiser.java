@@ -74,7 +74,7 @@ public class GameInitialiser {
 		
 		for(FieldEntry entry : fieldLayout) {
 			
-			String path = root + entry.getName().toLowerCase() + ".json";
+			String path = root + entry.getName() + ".json";
 			
 			if( Files.exists(Path.of(path)) ) {
 				log.info("file exists :)");
