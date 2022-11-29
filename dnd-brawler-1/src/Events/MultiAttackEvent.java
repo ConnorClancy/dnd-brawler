@@ -9,7 +9,7 @@ import Actions.Action;
 import Actions.MultiAction;
 import Combatants.Combatant;
 import Exceptions.EventTypeException;
-import Runner.GameRunner;
+import Utilities.BrawlOutputter;
 
 public class MultiAttackEvent implements Event {
 
@@ -34,7 +34,7 @@ public class MultiAttackEvent implements Event {
 
 		attackSequence.forEach((action, repeatCount) -> {
 			for (int i = 1; i <= repeatCount; i++) {
-				System.out.println(action.getName() + ": " + i + "/" + repeatCount);
+				BrawlOutputter.getBrawlOutputter().logEvent(action.getName() + ": " + i + "/" + repeatCount);
 				
 				if (!sourceTargetStack.isEmpty()) {
 

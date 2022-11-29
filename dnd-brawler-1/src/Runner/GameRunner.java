@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import Combatants.Combatant;
 import Events.Event;
 import Exceptions.ValidationException;
+import Utilities.BrawlOutputter;
 import Utilities.CombatAI;
 import Utilities.CombatRoster;
 import Utilities.FieldEntry;
@@ -29,13 +30,15 @@ public class GameRunner {
 			return;
 		}
 		
+		BrawlOutputter brawlOutputter = BrawlOutputter.getBrawlOutputter();
+		
 		GameInitialiser gi = new GameInitialiser();
 		
 		if (gi.setField(fieldLayout)) {
 			
 			CombatRoster roster = State.getState().getRoster();
 			
-			System.out.println(roster.toString());
+			log.info(roster.toString());
 			
 			Iterator<Combatant> turnItr = roster.iterator();
 			
@@ -44,10 +47,9 @@ public class GameRunner {
 			
 			int roundCounter = 0;
 			//Round Loop
-			while (State.getState().opposingCombatantsRemain()) {
-								
-				System.out.println("Round :" + ++roundCounter);
-				System.out.println("----------------------");
+			while (State.getState().opposingCombatantsRemain()) {				
+				
+				brawlOutputter.logNewRound(++roundCounter);
 				
 				turnItr = roster.listIterator();
 
@@ -58,7 +60,7 @@ public class GameRunner {
 					
 					currCombatant = turnItr.next();
 					
-					System.out.println("Turn: " + currCombatant.toString());
+					brawlOutputter.logEvent("Turn: " + currCombatant.toString());
 
 					roster = State.getState().getRoster();
 
@@ -84,21 +86,22 @@ public class GameRunner {
 
 			}
 			
-			System.out.println("----------------------");
-
-			System.out.println("Winning Team: " + State.getState().getRoster().get(0).getTeam());
-
+			brawlOutputter.logWinner(
+					State.getState().getRoster().get(0).getTeam(),
+					roster.toString()
+				);
 			
 		}
 		
 		else {
 			log.severe("Initialiser failed, game did not start");
-			System.out.println("Exiting Early: report error");
+			brawlOutputter.logEvent("Exiting Early: report error");
 		}
 		
-		System.out.println("----------------------");
+		brawlOutputter.logEvent("----------------------");
 		
+		brawlOutputter.logEvent("Brawl Brawled");
 		
-		System.out.println("Brawl Brawled");
+		System.out.print(brawlOutputter.getBrawlOutputAsString());
 	}
 }

@@ -6,7 +6,6 @@ import static Utilities.ActionDirectory.ATTACK_TYPE;
 import static Utilities.ActionDirectory.MULTI_ATTACK_TYPE;
 import static Utilities.ActionDirectory.REGENERATION_TYPE;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +30,7 @@ import Combatants.CombatantSorter;
 import Combatants.Statistics;
 import Exceptions.ActionNotExistException;
 import Exceptions.CreationException;
+import Utilities.BrawlOutputter;
 import Utilities.DiceBox;
 import Utilities.FieldEntry;
 
@@ -268,7 +268,7 @@ public class GameInitialiser {
 
 		for (Combatant c : field) {
 			initiative = rollInitiative(c);
-			System.out.println(c.toString() + " - intiative:" + initiative);
+			BrawlOutputter.getBrawlOutputter().logEvent(c.toString() + " - intiative:" + initiative);
 			c.setInitiative(initiative);
 		}
 

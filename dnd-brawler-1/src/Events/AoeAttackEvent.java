@@ -4,8 +4,9 @@ import java.util.Stack;
 
 import Actions.AoeAttackAction;
 import Combatants.Combatant;
-import Utilities.DiceBox;
 import Runner.State;
+import Utilities.BrawlOutputter;
+import Utilities.DiceBox;
 
 public class AoeAttackEvent implements Event {
 
@@ -34,12 +35,12 @@ public class AoeAttackEvent implements Event {
 			int save = DiceBox.rollDTwenty() + currentTarget.getStatBonus(action.getSaveType());
 
 			if (save < action.getDc()) {
-				System.out.println(action.getName() + " hits " + currentTarget + "(rolled " + save
+				BrawlOutputter.getBrawlOutputter().logEvent(action.getName() + " hits " + currentTarget + "(rolled " + save
 						+ ") with full damage: " + damageRoll);
 				currentTarget.reduceHealthPoints(damageRoll, action.getDamageType());
 			} else {
 				int halfDamage = Math.round(damageRoll) / 2;
-				System.out.println(action.getName() + " hits " + currentTarget + "(rolled " + save
+				BrawlOutputter.getBrawlOutputter().logEvent(action.getName() + " hits " + currentTarget + "(rolled " + save
 						+ ") with half damage: " + halfDamage);
 				currentTarget.reduceHealthPoints(halfDamage, action.getDamageType());
 			}

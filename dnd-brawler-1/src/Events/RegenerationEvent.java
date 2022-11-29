@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import Actions.RegenerationAction;
 import Combatants.Combatant;
+import Utilities.BrawlOutputter;
 
 public class RegenerationEvent implements Event {
 
@@ -24,7 +25,7 @@ public class RegenerationEvent implements Event {
 				NOT_OVERHEAL
 			);
 		
-		System.out.println("Healed " + action.getFlatAmount() + "hp - new total: " + targetStack.get(0).getHealthPoints() + "hp");
+		BrawlOutputter.getBrawlOutputter().logEvent("Healed " + action.getFlatAmount() + "hp - new total: " + targetStack.get(0).getHealthPoints() + "hp");
 	}
 
 }

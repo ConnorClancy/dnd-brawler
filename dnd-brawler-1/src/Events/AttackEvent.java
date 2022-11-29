@@ -5,8 +5,9 @@ import java.util.Stack;
 import Actions.AttackAction;
 import Actions.DamageDie;
 import Combatants.Combatant;
-import Utilities.DiceBox;
 import Runner.State;
+import Utilities.BrawlOutputter;
+import Utilities.DiceBox;
 
 public class AttackEvent implements Event {
 	
@@ -33,7 +34,7 @@ public class AttackEvent implements Event {
 			
 			attackRoll = DiceBox.rollDTwenty() + this.action.getToHitBonus();
 			
-			System.out.println("Rolls " + attackRoll + " to hit with its " + action.getName());
+			BrawlOutputter.getBrawlOutputter().logEvent("Rolls " + attackRoll + " to hit with its " + action.getName());
 
 			if (attackRoll >= currentTarget.getAc()) {
 				
@@ -50,7 +51,7 @@ public class AttackEvent implements Event {
 
 					damageRoll += damageDie.getDamageBonus();
 
-					System.out.println("Hits " + currentTarget.toString() + " for " +
+					BrawlOutputter.getBrawlOutputter().logEvent("Hits " + currentTarget.toString() + " for " +
 							damageRoll + " points of " + damageDie.getDamageType() + " damage");
 
 					currentTarget.reduceHealthPoints(damageRoll, damageDie.getDamageType());
@@ -66,7 +67,7 @@ public class AttackEvent implements Event {
 					}
 				}				
 			} else {
-				System.out.println("Attack missed");
+				BrawlOutputter.getBrawlOutputter().logEvent("Attack missed");
 			}
 			
 			

@@ -1,6 +1,7 @@
 package Runner;
 
 import Combatants.Combatant;
+import Utilities.BrawlOutputter;
 import Utilities.CombatRoster;
 
 public class State {
@@ -25,7 +26,7 @@ public class State {
 		roster.add(combatant);
 		roster.increaseTeamCount(combatant.getTeam());
 		
-		System.out.println(combatant.toString() + " added to combat");
+		BrawlOutputter.getBrawlOutputter().logEvent(combatant.toString() + " added to combat");
 	}
 	
 	public CombatRoster getRoster() {
@@ -36,7 +37,7 @@ public class State {
 		roster.remove(target);
 		roster.reduceTeamCount(target.getTeam());
 		
-		System.out.println(target.toString() + " removed from combat");
+		BrawlOutputter.getBrawlOutputter().logEvent(target.toString() + " removed from combat");
 	}
 	
 	public boolean opposingCombatantsRemain() {

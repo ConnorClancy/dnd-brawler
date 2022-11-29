@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Actions.Action;
 import Exceptions.ActionNotExistException;
 import Exceptions.CreationException;
+import Utilities.BrawlOutputter;
 
 public class Combatant {
 	
@@ -58,7 +59,7 @@ public class Combatant {
 		for (String resistedType : damageResitances) {
 			if (incomingDamageType.equals(resistedType)) {
 				damageAmount = (int) Math.floor(damageAmount/2.0);
-				System.out.println("resisted damage");
+				BrawlOutputter.getBrawlOutputter().logEvent(this.name + " resists " + incomingDamageType + " damage - only takes: " + damageAmount);
 				break;
 			}
 		}
@@ -66,7 +67,7 @@ public class Combatant {
 		for (String vulnerableType : damageVulnerabilities) {
 			if (incomingDamageType.equals(vulnerableType)) {
 				damageAmount = damageAmount * 2;
-				System.out.println("vulnerable!");
+				BrawlOutputter.getBrawlOutputter().logEvent(this.name + "is vulnerable to " + incomingDamageType + " - takes double damage: " + damageAmount);
 				break;
 			}
 		}

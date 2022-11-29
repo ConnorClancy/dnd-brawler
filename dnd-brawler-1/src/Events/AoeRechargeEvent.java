@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import Actions.AoeRechargeAction;
 import Combatants.Combatant;
+import Utilities.BrawlOutputter;
 import Utilities.DiceBox;
 
 public class AoeRechargeEvent implements Event {
@@ -23,7 +24,7 @@ public class AoeRechargeEvent implements Event {
 
 			int rechargeRoll = DiceBox.rollActionDice(action.getRechargeDieSides());
 
-			System.out.println(targetStack.peek() + " rolled " + rechargeRoll + " to recharge its AOE");
+			BrawlOutputter.getBrawlOutputter().logEvent(targetStack.peek() + " rolls " + rechargeRoll + " to recharge its AOE - " + action.getSuccessBoundLower() + "needed");
 
 			targetStack.pop().setAoeAttackAvailable(
 					rechargeRoll >= action.getSuccessBoundLower() && 
