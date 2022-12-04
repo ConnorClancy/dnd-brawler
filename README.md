@@ -28,7 +28,12 @@ And example input might look like the following:
 * Troll
 
 ## Output
-The results of the program wil be outputted to the console. Debugging information will be displayed in red text. The winner of the brawl and how many of the winning team will be shown, then the turn by turn battle information.
+The results can be returned to either the console or to a JSON file. By default, it will be returned to the console. To toggle this, change line 33 of *GameRunner.java* from *getBrawlOutputter()* to *getBrawlOutput()* (the details of these methods can be found in *BrawlOutputter.java* class).
+
+![image](https://user-images.githubusercontent.com/22297137/205492821-5e32239a-c3e5-4af6-a680-f6a35abc9be9.png)
+
+The format of the output is as follows: debugging information will be displayed in red text, the winner of the brawl and how many of the winning team will be shown, then the turn by turn battle information.
+
 ![image](https://user-images.githubusercontent.com/22297137/205461322-944ae3e8-4ac0-4e26-a0b7-21f80910dab2.png)
 
 ## Dependencies
