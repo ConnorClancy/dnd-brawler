@@ -1,6 +1,7 @@
 package Runner;
 
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Combatants.Combatant;
@@ -16,8 +17,12 @@ import Utilities.LayoutCreator;
 public class GameRunner {
 	
 	protected static Logger log = Logger.getLogger("GameRunner");
-
+	
 	public static void main(String args[]) {
+		
+		long startTimeMillis = System.currentTimeMillis(); 
+		
+		log.setLevel(Level.SEVERE);
 		
 		LayoutCreator lc = new LayoutCreator(args);
 		
@@ -31,6 +36,12 @@ public class GameRunner {
 		}
 		
 		BrawlOutputter brawlOutputter = BrawlOutputter.getBrawlOutputter();
+		
+		//reset functionality for multiple back to back runs in app
+		if (!State.getState().getRoster().isEmpty()) {
+			State.getState().resetRoster();
+			brawlOutputter.clearLog();
+		}
 		
 		GameInitialiser gi = new GameInitialiser();
 		
@@ -102,6 +113,12 @@ public class GameRunner {
 		
 		brawlOutputter.logEvent("Brawl Brawled");
 		
-		System.out.print(brawlOutputter.getBrawlOutputAsString());
+		long endTimeMillis = System.currentTimeMillis(); 
+		
+		long runTime = endTimeMillis - startTimeMillis;
+		
+		brawlOutputter.logRunTime(runTime);
+		
+//		System.out.print(brawlOutputter.getBrawlOutputAsString());
 	}
 }
