@@ -10,6 +10,7 @@ public class BrawlOutputter {
 	JSONObject brawlLogParent;
 	JSONObject brawlLogWinner;
 	JSONObject brawlLogPlayByPlay;
+	long brawlLogRunTime;
 	String playByPlay;
 	JSONObject round = null;
 	
@@ -18,6 +19,7 @@ public class BrawlOutputter {
 		brawlLogParent = new JSONObject();
 		brawlLogWinner = new JSONObject();
 		brawlLogPlayByPlay = new JSONObject();
+		brawlLogRunTime = 0;
 		playByPlay = "";
 	}
 	
@@ -35,6 +37,8 @@ public class BrawlOutputter {
 		brawlLogPlayByPlay.put("log", playByPlay);
 		
 		brawlLogParent.put("play-by-play", brawlLogPlayByPlay);
+		
+		brawlLogParent.put("runtime", brawlLogRunTime);
 		
 		return brawlLogParent;
 		
@@ -89,4 +93,20 @@ public class BrawlOutputter {
 		playByPlay += roundFormated;
 		
 	}
+
+	public void logRunTime(long runTime) {
+		this.brawlLogRunTime = runTime;
+		
+	}
+
+	public void clearLog() {
+		brawlLogParent = new JSONObject();
+		brawlLogWinner = new JSONObject();
+		brawlLogPlayByPlay = new JSONObject();
+		playByPlay = "";
+		brawlLogRunTime = 0;
+		
+	}
+	
+	
 }

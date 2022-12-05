@@ -47,5 +47,10 @@ public class State {
 	public int getCombatantCount() {
 		return roster.getBlueTeamCount() + roster.getRedTeamCount();
 	}
+
+	public void resetRoster() {
+		roster.clear();
+		roster = new CombatRoster();
+	}
 	
 }
